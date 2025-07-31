@@ -1,0 +1,5 @@
+/* Minimal reset and custom styles. Tailwind utility classes handle most styling. */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
