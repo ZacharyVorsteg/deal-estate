@@ -32,9 +32,12 @@ import {
   Clock,
   CheckCircle2,
   ShieldCheck
+
 } from 'lucide-react';
 
-/**
+
+/
+**
  * Main CRM component. This encapsulates all the views, state and logic for
  * managing properties, clients and notifications. The UI is styled using
  * TailwindCSS classes that are included via CDN in index.html.
@@ -64,6 +67,7 @@ const IndustrialCRM = () => {
     email: 'john@primeindustrial.com',
     phone: '(555) 123-4567',
     logo: null,
+ 
     subscription: 'Professional',
     billingCycle: 'monthly',
     nextBilling: '2024-02-15',
@@ -96,10 +100,14 @@ const IndustrialCRM = () => {
     danger: '#ff4757',
     background: '#f8f9fa',
     cardBg: '#ffffff',
-    textPrimary: '#1a1a1a',
+    t
+
+      extPrimary: '#1a1a1a',
+
     textSecondary: '#6c757d',
     border: '#e9ecef'
   };
+
 
   // Matching clients preview state
   const [matchingClients, setMatchingClients] = useState([]);
@@ -127,12 +135,15 @@ const IndustrialCRM = () => {
           views: 145,
           inquiries: 12
         },
+
+        
         {
           id: 2,
           title: 'Tech Manufacturing Facility',
           city: 'Orlando',
           state: 'FL',
           price: 3200000,
+
           property_type: 'Industrial',
           loading_docks: 4,
           ceiling_height: 28,
