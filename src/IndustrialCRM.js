@@ -86,8 +86,15 @@ const IndustrialCRM = () => {
   });
   const [manualClientForm, setManualClientForm] = useState({
     name: '', email: '', phone: '', company: '', source: 'phone', notes: '',
-    min_price: '', max_price: '', city: '', state: '', property_type: '', status: 'active'
+    min_price: '', max_price: '', city: '', state: '', property_type: '', status: 'active',
+    loading_docks: '', ceiling_height: '', mandatory_docks: false, mandatory_ceiling: false
   });
+
+  // Form validation and feedback states
+  const [formErrors, setFormErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   // Colour palette used throughout the application
   const colors = {
@@ -247,44 +254,78 @@ const IndustrialCRM = () => {
   /**
    * Validates and adds a new property, then notifies matching clients.
    */
-  const handleAddProperty = () => {
-    if (!propertyForm.title || !propertyForm.city || !propertyForm.state || !propertyForm.price) {
-      alert('Please fill in all required fields');
+  const handleAddProperty = async () => {
+    // Clear previous messages
+    setFormErrors({});
+    setErrorMessage('');
+    setSuccessMessage('');
+
+    // Validate required fields
+    const errors = {};
+    if (!propertyForm.title?.trim()) errors.title = 'Property title is required';
+    if (!propertyForm.city?.trim()) errors.city = 'City is required';
+    if (!propertyForm.state?.trim()) errors.state = 'State is required';
+    if (!propertyForm.price || propertyForm.price <= 0) errors.price = 'Valid price is required';
+    
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      setErrorMessage('Please fix the errors below');
       return;
     }
-    const newProperty = {
-      id: Date.now(),
-      title: propertyForm.title,
-      city: propertyForm.city,
-      state: propertyForm.state,
-      price: parseFloat(propertyForm.price),
-      property_type: propertyForm.property_type,
-      loading_docks: propertyForm.loading_docks ? parseInt(propertyForm.loading_docks) : null,
-      ceiling_height: propertyForm.ceiling_height ? parseInt(propertyForm.ceiling_height) : null,
-      sqft: propertyForm.sqft ? parseInt(propertyForm.sqft) : null,
-      year_built: propertyForm.year_built,
-      zoning: propertyForm.zoning,
-      description: propertyForm.description,
-      image: propertyForm.image,
-      status: 'active',
-      created_at: new Date().toISOString(),
-      views: 0,
-      inquiries: 0
-    };
-    setProperties([...properties, newProperty]);
-    // Notify matching clients
-    const activeMatchingClients = matchingClients.filter((client) => client.status === 'active');
-    activeMatchingClients.forEach((client) => {
-      sendNotification(client, newProperty);
-    });
-    alert(`Property added successfully! ${activeMatchingClients.length} active client(s) notified.`);
-    // Reset form
-    setPropertyForm({
-      title: '', city: '', state: '', price: '', property_type: '', loading_docks: '',
-      ceiling_height: '', image: null, sqft: '', year_built: '', zoning: '', description: ''
-    });
-    setMatchingClients([]);
-    setCurrentView('properties');
+
+    setIsSubmitting(true);
+    
+    try {
+      const newProperty = {
+        id: Date.now(),
+        title: propertyForm.title.trim(),
+        city: propertyForm.city.trim(),
+        state: propertyForm.state.trim(),
+        price: parseFloat(propertyForm.price),
+        property_type: propertyForm.property_type || null,
+        loading_docks: propertyForm.loading_docks ? parseInt(propertyForm.loading_docks) : null,
+        ceiling_height: propertyForm.ceiling_height ? parseInt(propertyForm.ceiling_height) : null,
+        sqft: propertyForm.sqft ? parseInt(propertyForm.sqft) : null,
+        year_built: propertyForm.year_built || null,
+        zoning: propertyForm.zoning || null,
+        description: propertyForm.description || null,
+        image: propertyForm.image,
+        status: 'active',
+        created_at: new Date().toISOString(),
+        views: 0,
+        inquiries: 0
+      };
+
+      setProperties(prev => [newProperty, ...prev]);
+      
+      // Notify matching clients
+      const activeMatchingClients = matchingClients.filter((client) => client.status === 'active');
+      activeMatchingClients.forEach((client) => {
+        sendNotification(client, newProperty);
+      });
+
+      // Show success message
+      setSuccessMessage(`Property added successfully! ${activeMatchingClients.length} active client(s) notified.`);
+      
+      // Reset form
+      setPropertyForm({
+        title: '', city: '', state: '', price: '', property_type: '', loading_docks: '',
+        ceiling_height: '', image: null, sqft: '', year_built: '', zoning: '', description: ''
+      });
+      setMatchingClients([]);
+      
+      // Navigate back after success
+      setTimeout(() => {
+        setCurrentView('properties');
+        setSuccessMessage('');
+      }, 2000);
+      
+    } catch (error) {
+      setErrorMessage('Failed to add property. Please try again.');
+      console.error('Error adding property:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   /**
@@ -337,21 +378,16 @@ const IndustrialCRM = () => {
    * marked as archived and hidden from active lists.
    */
   const handleArchiveProperty = (propertyId) => {
-    if (confirm('Are you sure you want to archive this property?')) {
-      setProperties(properties.map((prop) => (prop.id === propertyId ? { ...prop, status: 'archived' } : prop)));
-      alert('Property archived successfully!');
-    }
+    setProperties(prev => prev.map(property => 
+      property.id === propertyId 
+        ? { ...property, status: 'archived' }
+        : property
+    ));
+    setSuccessMessage('Property archived successfully');
+    setTimeout(() => setSuccessMessage(''), 3000);
   };
 
-  /**
-   * Permanently deletes a property from the list. Use carefully.
-   */
-  const handleDeleteProperty = (propertyId) => {
-    if (confirm('Are you sure you want to permanently delete this property?')) {
-      setProperties(properties.filter((prop) => prop.id !== propertyId));
-      alert('Property deleted successfully!');
-    }
-  };
+
 
   /**
    * Updates the user profile with provided changes.
@@ -362,78 +398,236 @@ const IndustrialCRM = () => {
   };
 
   /**
-   * Marks a property as leased by a client. Updates the client status to
-   * "leased" and records the lease history. Also sets price protection.
+   * Handles leasing a property to a client.
    */
   const handleLeaseProperty = (clientId, propertyId) => {
-    const property = properties.find((p) => p.id === propertyId);
-    const client = clients.find((c) => c.id === clientId);
-    if (!property || !client) return;
-    const confirmMessage = `Mark ${client.name} as having leased "${property.title}" for ${property.price.toLocaleString()}?\n\nThis will:\n• Stop notifications for cheaper properties\n• Change their status to "Leased"\n• Track this lease in the system`;
-    if (confirm(confirmMessage)) {
-      setClients(
-        clients.map((c) =>
-          c.id === clientId
-            ? {
-                ...c,
-                status: 'leased',
-                leasedPropertyId: propertyId,
-                leaseStartDate: new Date().toISOString(),
-                priceProtection: property.price
-              }
-            : c
-        )
-      );
-      const leaseRecord = {
-        id: Date.now(),
-        clientId,
-        clientName: client.name,
-        propertyId,
-        propertyTitle: property.title,
-        price: property.price,
-        leaseDate: new Date().toISOString()
-      };
-      setLeaseHistory([...leaseHistory, leaseRecord]);
-      alert(
-        `${client.name} has been marked as leased. They won't receive notifications for properties under ${property.price.toLocaleString()}`
-      );
+    // Update client status to leased
+    setClients(prev => prev.map(client => 
+      client.id === clientId 
+        ? { ...client, status: 'leased', leasedProperty: propertyId, leasedAt: new Date().toISOString() }
+        : client
+    ));
+    
+    // Update property status to leased
+    setProperties(prev => prev.map(property => 
+      property.id === propertyId 
+        ? { ...property, status: 'leased', leasedTo: clientId, leasedAt: new Date().toISOString() }
+        : property
+    ));
+    
+    // Add to lease history
+    const client = clients.find(c => c.id === clientId);
+    const property = properties.find(p => p.id === propertyId);
+    const leaseRecord = {
+      id: Date.now(),
+      clientId,
+      propertyId,
+      clientName: client?.name,
+      propertyTitle: property?.title,
+      leasedAt: new Date().toISOString(),
+      status: 'active'
+    };
+    setLeaseHistory(prev => [leaseRecord, ...prev]);
+    
+    // Show success message
+    setSuccessMessage(`${client?.name} has successfully leased ${property?.title}`);
+    setTimeout(() => setSuccessMessage(''), 3000);
+  };
+
+  /**
+   * Handles editing a property.
+   */
+  const handleEditProperty = (property) => {
+    setPropertyForm({
+      title: property.title || '',
+      city: property.city || '',
+      state: property.state || '',
+      price: property.price || '',
+      property_type: property.property_type || '',
+      loading_docks: property.loading_docks || '',
+      ceiling_height: property.ceiling_height || '',
+      sqft: property.sqft || '',
+      year_built: property.year_built || '',
+      zoning: property.zoning || '',
+      description: property.description || '',
+      image: property.image || null
+    });
+    setCurrentView('add-property');
+  };
+
+  /**
+   * Handles deleting a property.
+   */
+  const handleDeleteProperty = (propertyId) => {
+    if (window.confirm('Are you sure you want to delete this property? This action cannot be undone.')) {
+      setProperties(prev => prev.filter(p => p.id !== propertyId));
+      setSuccessMessage('Property deleted successfully');
+      setTimeout(() => setSuccessMessage(''), 3000);
     }
   };
 
   /**
-   * Toggles a client's status between active, leased and inactive. Handles
-   * resetting lease info when going back to active.
+   * Handles editing a client.
    */
-  const handleToggleClientStatus = (clientId, newStatus) => {
-    const client = clients.find((c) => c.id === clientId);
-    if (!client) return;
-    let confirmMessage = `Change ${client.name}'s status to "${newStatus}"?`;
-    if (newStatus === 'active' && client.status === 'leased') {
-      confirmMessage += '\n\nThis will resume property notifications for this client.';
-    } else if (newStatus === 'leased') {
-      confirmMessage += '\n\nThis will pause notifications. Use this when they sign a lease.';
-    } else if (newStatus === 'inactive') {
-      confirmMessage += '\n\nThis will stop all notifications and mark them as inactive.';
-    }
-    if (confirm(confirmMessage)) {
-      setClients(
-        clients.map((c) =>
-          c.id === clientId
-            ? {
-                ...c,
-                status: newStatus,
-                leasedPropertyId: newStatus === 'active' ? null : c.leasedPropertyId,
-                priceProtection: newStatus === 'active' ? null : c.priceProtection
-              }
-            : c
-        )
-      );
-      if (selectedClient && selectedClient.id === clientId) {
-        setSelectedClient({ ...selectedClient, status: newStatus });
-      }
-      alert(`Status updated to "${newStatus}"`);
+  const handleEditClient = (client) => {
+    setManualClientForm({
+      name: client.name || '',
+      email: client.email || '',
+      phone: client.phone || '',
+      company: client.company || '',
+      source: client.source || 'manual',
+      notes: client.notes || '',
+      min_price: client.min_price || '',
+      max_price: client.max_price || '',
+      city: client.city || '',
+      state: client.state || '',
+      property_type: client.property_type || '',
+      status: client.status || 'active'
+    });
+    setCurrentView('add-manual-client');
+  };
+
+  /**
+   * Handles deleting a client.
+   */
+  const handleDeleteClient = (clientId) => {
+    if (window.confirm('Are you sure you want to delete this client? This action cannot be undone.')) {
+      setClients(prev => prev.filter(c => c.id !== clientId));
+      setSuccessMessage('Client deleted successfully');
+      setTimeout(() => setSuccessMessage(''), 3000);
     }
   };
+
+  /**
+   * Handles reactivating a property.
+   */
+  const handleReactivateProperty = (propertyId) => {
+    setProperties(prev => prev.map(property => 
+      property.id === propertyId 
+        ? { ...property, status: 'active' }
+        : property
+    ));
+    setSuccessMessage('Property reactivated successfully');
+    setTimeout(() => setSuccessMessage(''), 3000);
+  };
+
+  /**
+   * Handles updating client status.
+   */
+  const handleUpdateClientStatus = (clientId, newStatus) => {
+    setClients(prev => prev.map(client => 
+      client.id === clientId 
+        ? { ...client, status: newStatus }
+        : client
+    ));
+    setSuccessMessage(`Client status updated to ${newStatus}`);
+    setTimeout(() => setSuccessMessage(''), 3000);
+  };
+
+  /**
+   * Handles adding a new client with validation.
+   */
+  const handleAddClient = async () => {
+    // Clear previous messages
+    setFormErrors({});
+    setErrorMessage('');
+    setSuccessMessage('');
+
+    // Validate required fields
+    const errors = {};
+    if (!manualClientForm.name?.trim()) errors.name = 'Client name is required';
+    if (!manualClientForm.email?.trim() && !manualClientForm.phone?.trim()) {
+      errors.contact = 'Either email or phone is required';
+    }
+    if (manualClientForm.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(manualClientForm.email)) {
+      errors.email = 'Valid email format is required';
+    }
+    if (manualClientForm.min_price && manualClientForm.min_price < 0) errors.min_price = 'Minimum price cannot be negative';
+    if (manualClientForm.max_price && manualClientForm.max_price < 0) errors.max_price = 'Maximum price cannot be negative';
+    if (manualClientForm.min_price && manualClientForm.max_price && parseFloat(manualClientForm.min_price) > parseFloat(manualClientForm.max_price)) {
+      errors.priceRange = 'Minimum price cannot exceed maximum price';
+    }
+    
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      setErrorMessage('Please fix the errors below');
+      return;
+    }
+
+    setIsSubmitting(true);
+    
+    try {
+      const newClient = {
+        id: Date.now(),
+        name: manualClientForm.name.trim(),
+        email: manualClientForm.email?.trim() || null,
+        phone: manualClientForm.phone?.trim() || null,
+        company: manualClientForm.company?.trim() || null,
+        source: manualClientForm.source,
+        notes: manualClientForm.notes?.trim() || null,
+        min_price: manualClientForm.min_price ? parseFloat(manualClientForm.min_price) : null,
+        max_price: manualClientForm.max_price ? parseFloat(manualClientForm.max_price) : null,
+        city: manualClientForm.city?.trim() || null,
+        state: manualClientForm.state?.trim() || null,
+        property_type: manualClientForm.property_type || null,
+        status: manualClientForm.status,
+        criteria: {
+          min_price: manualClientForm.min_price ? parseFloat(manualClientForm.min_price) : null,
+          max_price: manualClientForm.max_price ? parseFloat(manualClientForm.max_price) : null,
+          city: manualClientForm.city?.trim() || null,
+          state: manualClientForm.state?.trim() || null,
+          property_type: manualClientForm.property_type || null,
+          loading_docks: manualClientForm.loading_docks ? parseInt(manualClientForm.loading_docks) : null,
+          ceiling_height: manualClientForm.ceiling_height ? parseInt(manualClientForm.ceiling_height) : null,
+          mandatory_docks: manualClientForm.mandatory_docks ? 1 : 0,
+          mandatory_ceiling: manualClientForm.mandatory_ceiling ? 1 : 0
+        },
+        created_at: new Date().toISOString()
+      };
+
+      setClients(prev => [newClient, ...prev]);
+      
+      // Show success message
+      setSuccessMessage('Client added successfully!');
+      
+      // Reset form
+      setManualClientForm({
+        name: '', email: '', phone: '', company: '', source: 'phone', notes: '',
+        min_price: '', max_price: '', city: '', state: '', property_type: '', status: 'active'
+      });
+      
+      // Clear success message after 3 seconds
+      setTimeout(() => setSuccessMessage(''), 3000);
+      
+      // Navigate back to clients
+      setTimeout(() => setCurrentView('clients'), 1000);
+      
+    } catch (error) {
+      setErrorMessage('Failed to add client. Please try again.');
+      console.error('Error adding client:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  /**
+   * Enhanced error display component
+   */
+  const ErrorMessage = ({ message }) => (
+    <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
+      <div className="flex items-center gap-2">
+        <AlertCircle className="w-5 h-5 text-red-500" />
+        <p className="text-red-700 font-medium">{message}</p>
+      </div>
+    </div>
+  );
+
+  /**
+   * Enhanced success display component
+   */
+  const SuccessMessage = ({ message }) => (
+    <div className="text-green-700 font-medium">{message}</div>
+  );
 
   /**
    * Determines if a property meets a client's search criteria.
@@ -1201,6 +1395,22 @@ const IndustrialCRM = () => {
             </select>
           </div>
           <div>
+            <label className="block text-sm font-medium mb-2" style={{ color: colors.textPrimary }}>City</label>
+            <input type="text" value={manualClientForm.city} onChange={(e) => setManualClientForm({ ...manualClientForm, city: e.target.value })} placeholder="Preferred city" className="w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2" style={{ borderColor: colors.border }} />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-2" style={{ color: colors.textPrimary }}>State</label>
+            <input type="text" value={manualClientForm.state} onChange={(e) => setManualClientForm({ ...manualClientForm, state: e.target.value })} placeholder="Preferred state" className="w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2" style={{ borderColor: colors.border }} />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-2" style={{ color: colors.textPrimary }}>City</label>
+            <input type="text" value={manualClientForm.city} onChange={(e) => setManualClientForm({ ...manualClientForm, city: e.target.value })} placeholder="Preferred city" className="w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2" style={{ borderColor: colors.border }} />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-2" style={{ color: colors.textPrimary }}>State</label>
+            <input type="text" value={manualClientForm.state} onChange={(e) => setManualClientForm({ ...manualClientForm, state: e.target.value })} placeholder="Preferred state" className="w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2" style={{ borderColor: colors.border }} />
+          </div>
+          <div>
             <label className="block text-sm font-medium mb-2" style={{ color: colors.textPrimary }}>Property Type</label>
             <input type="text" value={manualClientForm.property_type} onChange={(e) => setManualClientForm({ ...manualClientForm, property_type: e.target.value })} placeholder="e.g., Warehouse" className="w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2" style={{ borderColor: colors.border }} />
           </div>
@@ -1212,14 +1422,27 @@ const IndustrialCRM = () => {
             <label className="block text-sm font-medium mb-2" style={{ color: colors.textPrimary }}>Max Budget</label>
             <input type="number" value={manualClientForm.max_price} onChange={(e) => setManualClientForm({ ...manualClientForm, max_price: e.target.value })} className="w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2" style={{ borderColor: colors.border }} />
           </div>
+          <div>
+            <label className="block text-sm font-medium mb-2" style={{ color: colors.textPrimary }}>Loading Docks</label>
+            <input type="number" value={manualClientForm.loading_docks} onChange={(e) => setManualClientForm({ ...manualClientForm, loading_docks: e.target.value })} placeholder="Minimum required" className="w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2" style={{ borderColor: colors.border }} />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-2" style={{ color: colors.textPrimary }}>Ceiling Height (ft)</label>
+            <input type="number" value={manualClientForm.ceiling_height} onChange={(e) => setManualClientForm({ ...manualClientForm, ceiling_height: e.target.value })} placeholder="Minimum required" className="w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2" style={{ borderColor: colors.border }} />
+          </div>
           <div className="md:col-span-2">
             <label className="block text-sm font-medium mb-2" style={{ color: colors.textPrimary }}>Notes</label>
             <textarea value={manualClientForm.notes} onChange={(e) => setManualClientForm({ ...manualClientForm, notes: e.target.value })} rows={3} className="w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2" style={{ borderColor: colors.border }} />
           </div>
         </div>
         <div className="mt-8 flex gap-4">
-          <button onClick={handleAddManualClient} className="px-6 py-2 rounded-lg font-medium text-white hover:shadow-lg transition-all" style={{ backgroundColor: colors.accent }}>
-            Add Client
+          <button 
+            onClick={handleAddClient} 
+            disabled={isSubmitting}
+            className="px-6 py-2 rounded-lg font-medium text-white hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed" 
+            style={{ backgroundColor: colors.accent }}
+          >
+            {isSubmitting ? 'Adding Client...' : 'Add Client'}
           </button>
           <button onClick={() => setCurrentView('clients')} className="px-6 py-2 rounded-lg font-medium border hover:bg-gray-50" style={{ borderColor: colors.border, color: colors.textPrimary }}>
             Cancel
@@ -1257,6 +1480,14 @@ const IndustrialCRM = () => {
               <div>
                 <label className="block text-sm font-medium mb-2" style={{ color: colors.textPrimary }}>Price *</label>
                 <input type="number" value={propertyForm.price} onChange={(e) => setPropertyForm({ ...propertyForm, price: e.target.value })} className="w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2" style={{ borderColor: colors.border }} />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2" style={{ color: colors.textPrimary }}>City *</label>
+                <input type="text" value={propertyForm.city} onChange={(e) => setPropertyForm({ ...propertyForm, city: e.target.value })} className="w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2" style={{ borderColor: colors.border }} />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2" style={{ color: colors.textPrimary }}>State *</label>
+                <input type="text" value={propertyForm.state} onChange={(e) => setPropertyForm({ ...propertyForm, state: e.target.value })} className="w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2" style={{ borderColor: colors.border }} />
               </div>
               <div>
                 <label className="block text-sm font-medium mb-2" style={{ color: colors.textPrimary }}>Property Type</label>
@@ -1540,7 +1771,7 @@ const IndustrialCRM = () => {
                       <span className="text-sm" style={{ color: colors.textSecondary }}>Current Status</span>
                       <select
                         value={selectedClient.status}
-                        onChange={(e) => handleToggleClientStatus(selectedClient.id, e.target.value)}
+                        onChange={(e) => handleUpdateClientStatus(selectedClient.id, e.target.value)}
                         className={`px-3 py-1 rounded-lg text-sm font-medium border ${
                           selectedClient.status === 'active'
                             ? 'bg-green-50 text-green-800 border-green-200'
@@ -1668,6 +1899,183 @@ const IndustrialCRM = () => {
   );
 
   /**
+   * Analytics view showing charts and insights.
+   */
+  const AnalyticsView = () => {
+    const totalProperties = properties.length;
+    const activeProperties = properties.filter(p => p.status === 'active').length;
+    const totalClients = clients.length;
+    const activeClients = clients.filter(c => c.status === 'active').length;
+    const leasedClients = clients.filter(c => c.status === 'leased').length;
+    const conversionRate = totalClients > 0 ? Math.round((leasedClients / totalClients) * 100) : 0;
+    
+    // Calculate monthly trends (mock data for now)
+    const monthlyData = [
+      { month: 'Jan', properties: 2, clients: 1, inquiries: 3 },
+      { month: 'Feb', properties: 3, clients: 2, inquiries: 5 },
+      { month: 'Mar', properties: 4, clients: 3, inquiries: 8 },
+      { month: 'Apr', properties: 5, clients: 4, inquiries: 12 },
+      { month: 'May', properties: 6, clients: 5, inquiries: 15 },
+      { month: 'Jun', properties: 7, clients: 6, inquiries: 18 }
+    ];
+
+    return (
+      <div className="p-6">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold mb-2 text-neutral-800">Analytics</h1>
+          <p className="text-neutral-600">Track your performance and insights</p>
+        </div>
+
+        {/* Key Metrics */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="metric-card">
+            <div className="flex items-center justify-between mb-4">
+              <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center">
+                <Building2 className="w-6 h-6 text-blue-600" />
+              </div>
+              <span className="text-sm font-semibold px-3 py-1 rounded-full bg-blue-50 text-blue-700">
+                Total
+              </span>
+            </div>
+            <h3 className="metric-value">{totalProperties}</h3>
+            <p className="metric-label">Properties</p>
+          </div>
+
+          <div className="metric-card">
+            <div className="flex items-center justify-between mb-4">
+              <div className="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center">
+                <Users className="w-6 h-6 text-green-600" />
+              </div>
+              <span className="text-sm font-semibold px-3 py-1 rounded-full bg-green-50 text-green-700">
+                Active
+              </span>
+            </div>
+            <h3 className="metric-value">{activeClients}</h3>
+            <p className="metric-label">Active Clients</p>
+          </div>
+
+          <div className="metric-card">
+            <div className="flex items-center justify-between mb-4">
+              <div className="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center">
+                <TrendingUp className="w-6 h-6 text-purple-600" />
+              </div>
+              <span className="text-sm font-semibold px-3 py-1 rounded-full bg-purple-50 text-purple-700">
+                {conversionRate}%
+              </span>
+            </div>
+            <h3 className="metric-value">{conversionRate}%</h3>
+            <p className="metric-label">Conversion Rate</p>
+          </div>
+
+          <div className="metric-card">
+            <div className="flex items-center justify-between mb-4">
+              <div className="w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center">
+                <Bell className="w-6 h-6 text-orange-600" />
+              </div>
+              <span className="text-sm font-semibold px-3 py-1 rounded-full bg-orange-50 text-orange-700">
+                Total
+              </span>
+            </div>
+            <h3 className="metric-value">{notifications.length}</h3>
+            <p className="metric-label">Notifications</p>
+          </div>
+        </div>
+
+        {/* Charts Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          {/* Monthly Trends */}
+          <div className="card p-6">
+            <h3 className="text-xl font-semibold mb-4 text-neutral-800">Monthly Trends</h3>
+            <div className="space-y-4">
+              {monthlyData.map((data, index) => (
+                <div key={data.month} className="flex items-center justify-between">
+                  <span className="text-sm font-medium text-neutral-600">{data.month}</span>
+                  <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-2">
+                      <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                      <span className="text-sm text-neutral-600">{data.properties} properties</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                      <span className="text-sm text-neutral-600">{data.clients} clients</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Property Status Distribution */}
+          <div className="card p-6">
+            <h3 className="text-xl font-semibold mb-4 text-neutral-800">Property Status</h3>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium text-neutral-600">Active Properties</span>
+                <div className="flex items-center gap-2">
+                  <div className="w-20 h-3 bg-green-200 rounded-full overflow-hidden">
+                    <div 
+                      className="h-full bg-green-500 rounded-full" 
+                      style={{ width: `${(activeProperties / totalProperties) * 100}%` }}
+                    ></div>
+                  </div>
+                  <span className="text-sm font-semibold text-neutral-800">{activeProperties}</span>
+                </div>
+              </div>
+              
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium text-neutral-600">Archived Properties</span>
+                <div className="flex items-center gap-2">
+                  <div className="w-20 h-3 bg-neutral-200 rounded-full overflow-hidden">
+                    <div 
+                      className="h-full bg-neutral-500 rounded-full" 
+                      style={{ width: `${((totalProperties - activeProperties) / totalProperties) * 100}%` }}
+                    ></div>
+                  </div>
+                  <span className="text-sm font-semibold text-neutral-800">{totalProperties - activeProperties}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Recent Activity */}
+        <div className="card p-6">
+          <h3 className="text-xl font-semibold mb-4 text-neutral-800">Recent Activity</h3>
+          <div className="space-y-3">
+            {notifications.slice(0, 5).map((notification) => (
+              <div key={notification.id} className="flex items-center gap-3 p-3 rounded-lg bg-neutral-50">
+                <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
+                  <Bell className="w-4 h-4 text-primary-600" />
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-neutral-800">
+                    Notification sent to {notification.clientName}
+                  </p>
+                  <p className="text-xs text-neutral-500">
+                    {new Date(notification.timestamp).toLocaleDateString()}
+                  </p>
+                </div>
+                <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                  notification.status === 'Sent' 
+                    ? 'bg-green-100 text-green-700' 
+                    : 'bg-yellow-100 text-yellow-700'
+                }`}>
+                  {notification.status}
+                </span>
+              </div>
+            ))}
+            {notifications.length === 0 && (
+              <div className="text-center py-8 text-neutral-500">
+                No recent activity
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  /**
    * Main layout including sidebar, topbar and content area.
    */
   const MainLayout = () => (
@@ -1684,6 +2092,7 @@ const IndustrialCRM = () => {
           {currentView === 'client-detail' && <ClientDetailView />}
           {currentView === 'add-manual-client' && <AddManualClientView />}
           {currentView === 'notifications' && <NotificationsView />}
+          {currentView === 'analytics' && <AnalyticsView />}
           {currentView === 'settings' && <SettingsView />}
           {currentView === 'billing' && <BillingView />}
         </div>
