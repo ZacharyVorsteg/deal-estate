@@ -690,9 +690,9 @@ const IndustrialCRM = () => {
     <div
       className="fixed inset-y-0 left-0 z-40 flex flex-col"
       style={{
-        width: showMobileMenu ? 'var(--sidebar-width)' : 'var(--sidebar-collapsed)',
-        background: '#0D0D0E',
-        transition: 'width var(--transition-slow-cubic)'
+        width: '200px',
+        background: 'linear-gradient(180deg, #0D0D0E, #0A0A0B)',
+        borderRight: '1px solid rgba(255,255,255,0.05)'
       }}
     >
       {/* Top spacer for fixed navigation */}
@@ -871,11 +871,14 @@ const IndustrialCRM = () => {
    */
   const TopBar = () => (
     <div 
-      className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between"
+      className="fixed top-0 z-50 flex items-center justify-between"
       style={{
-        height: 'var(--top-nav-height)',
+        left: '200px',
+        right: '0',
+        height: '60px',
         background: 'linear-gradient(180deg, #0A0A0B 0%, #0F0F10 100%)',
-        borderBottom: '1px solid rgba(255,255,255,0.05)'
+        borderBottom: '1px solid rgba(255,255,255,0.05)',
+        padding: '0 24px'
       }}
     >
       {/* Logo Area - 240px width with right border */}
@@ -1048,8 +1051,8 @@ const IndustrialCRM = () => {
     };
 
     return (
-      <div className="p-6 min-h-screen bg-dark text-dark-secondary">
-        <div className="max-w-7xl mx-auto">
+      <div className="w-full" style={{ padding: '24px', background: '#0A0A0B' }}>
+        <div className="w-full">
           {/* Header */}
         <div className="mb-8">
             <h1 className="text-3xl font-bold text-dark-primary mb-2 font-display">Dashboard</h1>
@@ -1166,7 +1169,7 @@ const IndustrialCRM = () => {
                       points="0,20 20,16 40,18 60,8 80,12 100,4 100,24 0,24"
                     />
                   </svg>
-                </div>
+        </div>
               </div>
             ))}
           </div>
@@ -1184,7 +1187,7 @@ const IndustrialCRM = () => {
                     style={{ padding: '10px 20px', fontSize: '14px' }}
                   >
                     View All
-                  </button>
+              </button>
             </div>
                 <div className="space-y-4">
                   {properties.slice(0, 5).map((property) => (
@@ -1251,7 +1254,7 @@ const IndustrialCRM = () => {
                   >
                     <TrendingUp className="w-4 h-4" />
                     View Analytics
-                  </button>
+              </button>
             </div>
               </div>
 
@@ -1410,19 +1413,19 @@ const IndustrialCRM = () => {
   /**
    * Small card showing summary information for a property in a list.
    */
-    const PropertyCard = ({ property, onClick }) => (
+  const PropertyCard = ({ property, onClick }) => (
     <div className="premium-property slide-up" onClick={onClick}>
       <div className="property-image">
-        {property.image ? (
+      {property.image ? (
           <img 
             src={property.image} 
             alt={property.title}
           />
-        ) : (
+      ) : (
           <div className="w-full h-full bg-dark-secondary flex items-center justify-center">
             <Building2 className="w-12 h-12 text-dark-muted" />
-          </div>
-        )}
+        </div>
+      )}
         
         <div className="property-overlay" />
         
@@ -2478,11 +2481,11 @@ const IndustrialCRM = () => {
   const MainLayout = () => (
     <div className="flex min-h-screen" style={{ background: '#0A0A0B' }}>
       <Sidebar />
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col" style={{ marginLeft: '200px', width: 'calc(100% - 200px)' }}>
         <TopBar />
         <div 
-          className="flex-1 overflow-y-auto"
-          style={{ marginTop: 'var(--top-nav-height)' }}
+          className="flex-1 overflow-y-auto p-6"
+          style={{ marginTop: '60px', maxWidth: '100%', width: '100%' }}
         >
           {currentView === 'dashboard' && <DashboardView />}
           {currentView === 'properties' && <PropertiesView />}
