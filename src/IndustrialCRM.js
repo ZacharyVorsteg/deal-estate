@@ -688,19 +688,49 @@ const IndustrialCRM = () => {
    */
   const Sidebar = () => (
     <div
-      className="fixed inset-y-0 left-0 z-40 flex flex-col"
+      className="fixed inset-y-0 left-0 z-40 flex flex-col sidebar-icon-fix"
       style={{
         width: '200px',
-        background: 'linear-gradient(180deg, #0D0D0E, #0A0A0B)',
+        background: 'linear-gradient(180deg, #0F0F10 0%, #0A0A0B 100%)',
         borderRight: '1px solid rgba(255,255,255,0.05)'
       }}
     >
-      {/* Top spacer for fixed navigation */}
-      <div style={{ height: 'var(--top-nav-height)' }}></div>
+      {/* Logo/Brand Area */}
+      <div className="sidebar-logo" style={{ 
+        height: '60px', 
+        padding: '0 20px',
+        display: 'flex',
+        alignItems: 'center',
+        borderBottom: '1px solid rgba(255,255,255,0.05)'
+      }}>
+        <div className="sidebar-logo-icon" style={{
+          width: '32px',
+          height: '32px',
+          background: 'linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)',
+          borderRadius: '8px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: '14px',
+          fontWeight: '700',
+          color: 'white',
+          marginRight: '12px'
+        }}>
+          DE
+        </div>
+        <div className="sidebar-logo-text">
+          <div className="sidebar-logo-title" style={{ fontSize: '14px', fontWeight: '600', color: '#FFFFFF' }}>
+            Deal Estate
+          </div>
+          <div className="sidebar-logo-subtitle" style={{ fontSize: '11px', color: '#71717A' }}>
+            Professional
+          </div>
+        </div>
+      </div>
       
       <div className="flex-1 flex flex-col">
         {/* Navigation */}
-        <nav className="flex-1 p-4 space-y-2">
+        <nav className="flex-1 p-3 space-y-1">
           <SidebarItem 
             icon={Home} 
             label="Dashboard" 
@@ -734,13 +764,13 @@ const IndustrialCRM = () => {
           
           {/* Section divider */}
           <div 
-            className="mx-4"
+            className="sidebar-divider"
             style={{
               height: '1px',
-              background: 'rgba(255,255,255,0.06)',
-              margin: '8px 0'
+              background: 'rgba(255,255,255,0.05)',
+              margin: '12px 16px'
             }}
-          ></div>
+          />
           
           <SidebarItem 
             icon={Settings} 
@@ -757,23 +787,70 @@ const IndustrialCRM = () => {
         </nav>
 
         {/* User Profile Section */}
-        <div className="p-4 border-t border-white/6">
-          <div className="flex items-center gap-3 mb-4 p-3 rounded-xl hover:bg-white/3 transition-colors duration-200">
-            <div 
-              className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center text-white font-semibold text-lg shadow-md"
-            >
+        <div className="sidebar-profile" style={{
+          padding: '16px',
+          borderTop: '1px solid rgba(255,255,255,0.05)'
+        }}>
+          <div className="flex items-center gap-3">
+            <div className="sidebar-profile-avatar" style={{
+              width: '36px',
+              height: '36px',
+              borderRadius: '8px',
+              background: 'linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '14px',
+              fontWeight: '600',
+              color: 'white'
+            }}>
               {userProfile.name.charAt(0)}
             </div>
-            <div className="flex-1">
-              <p className="font-semibold text-sm text-white">{userProfile.name}</p>
-              <p className="text-xs text-gray-400">{userProfile.company}</p>
+            <div className="sidebar-profile-info flex-1">
+              <div className="sidebar-profile-name" style={{ 
+                fontSize: '13px', 
+                fontWeight: '500', 
+                color: '#FFFFFF' 
+              }}>
+                {userProfile.name}
+              </div>
+              <div className="sidebar-profile-role" style={{ 
+                fontSize: '11px', 
+                color: '#71717A' 
+              }}>
+                {userProfile.company}
+              </div>
             </div>
           </div>
           <button
             onClick={handleLogout}
-            className="w-full text-left text-sm px-4 py-3 rounded-xl hover:bg-red-500/10 hover:text-red-400 transition-all duration-200 text-red-500 font-medium flex items-center gap-2"
+            className="sidebar-signout"
+            style={{
+              width: '100%',
+              padding: '8px',
+              marginTop: '12px',
+              background: 'rgba(255,255,255,0.05)',
+              border: '1px solid rgba(255,255,255,0.08)',
+              borderRadius: '6px',
+              fontSize: '12px',
+              fontWeight: '500',
+              color: '#A1A1AA',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(255,255,255,0.08)';
+              e.currentTarget.style.color = '#E4E4E7';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(255,255,255,0.05)';
+              e.currentTarget.style.color = '#A1A1AA';
+            }}
           >
-            <ShieldCheck className="w-4 h-4" />
             Sign Out
           </button>
         </div>
@@ -787,82 +864,64 @@ const IndustrialCRM = () => {
   const SidebarItem = ({ icon: Icon, label, active, onClick }) => (
     <button
       onClick={onClick}
-      className="w-full flex items-center gap-3 relative group"
+      className={`sidebar-nav-item ${active ? 'active' : ''}`}
       style={{
-        height: 'var(--menu-item-height)',
-        padding: 'var(--menu-item-padding)',
-        borderRadius: 'var(--radius-large)',
-        transition: 'all var(--transition-fast)'
+        width: 'calc(100% - 16px)',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '12px',
+        height: '40px',
+        padding: '0 16px',
+        margin: '2px 8px',
+        borderRadius: '8px',
+        position: 'relative',
+        cursor: 'pointer',
+        transition: 'all 0.2s ease',
+        background: active ? 'linear-gradient(90deg, rgba(59,130,246,0.15) 0%, transparent 100%)' : 'transparent',
+        border: 'none'
       }}
     >
-      {/* Active Left Border Indicator - 3px solid #3B82F6 */}
+      {/* Active border indicator */}
       {active && (
         <div 
-          className="absolute left-0 top-1/2 transform -translate-y-1/2 rounded-r-full"
           style={{
+            position: 'absolute',
+            left: 0,
+            top: '50%',
+            transform: 'translateY(-50%)',
             width: '3px',
-            height: 'var(--icon-size-large)',
-            background: '#3B82F6'
+            height: '24px',
+            background: '#3B82F6',
+            borderRadius: '0 2px 2px 0'
           }}
-        ></div>
+        />
       )}
       
-      {/* Icon - 18px size */}
+      {/* Icon with proper sizing */}
       <Icon 
-        className="flex-shrink-0 transition-all duration-200" 
         style={{
-          width: 'var(--icon-size-default)',
-          height: 'var(--icon-size-default)',
-          color: active ? '#3B82F6' : '#8B8B8F'
+          width: '18px',
+          height: '18px',
+          strokeWidth: active ? 2.5 : 2,
+          color: active ? '#3B82F6' : '#71717A',
+          flexShrink: 0,
+          transition: 'color 0.2s ease'
         }}
       />
       
-      {/* Label - 14px font-size, 500 font-weight, #E4E4E7 color */}
+      {/* Label */}
       <span 
-        className="font-medium transition-colors duration-200"
         style={{
-          fontSize: 'var(--text-md)',
-          fontWeight: 'var(--font-medium)',
-          color: active ? '#3B82F6' : '#E4E4E7'
+          fontSize: '14px',
+          fontWeight: active ? '600' : '500',
+          color: active ? '#3B82F6' : '#A1A1AA',
+          flex: 1,
+          textAlign: 'left',
+          transition: 'color 0.2s ease'
         }}
       >
         {label}
       </span>
-
-      {/* Active indicator dot - 6px red circle, position absolute right 12px */}
-      {active && (
-        <div 
-          className="absolute rounded-full"
-          style={{
-            width: '6px',
-            height: '6px',
-            background: '#EF4444',
-            right: '12px',
-            top: '50%',
-            transform: 'translateY(-50%)'
-          }}
-        ></div>
-      )}
-
-      {/* Hover and Active Background States */}
-      <div 
-        className="absolute inset-0 rounded-lg transition-all duration-200 -z-10"
-        style={{
-          background: active 
-            ? 'linear-gradient(90deg, rgba(59,130,246,0.1) 0%, transparent 100%)'
-            : 'transparent'
-        }}
-      ></div>
-      
-      {/* Hover Background */}
-      {!active && (
-        <div 
-          className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 -z-10"
-          style={{
-            background: 'rgba(255,255,255,0.03)'
-          }}
-        ></div>
-      )}
     </button>
   );
 
