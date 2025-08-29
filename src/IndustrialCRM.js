@@ -962,25 +962,51 @@ const IndustrialCRM = () => {
       {/* Search Bar - 480px width, 36px height */}
       <div className="flex-1 flex justify-center">
         <div 
-          className="relative"
-          style={{ width: 'var(--search-width)' }}
+          className="relative search-bar"
+          style={{ 
+            width: '400px',
+            maxWidth: '100%'
+          }}
         >
           <Search 
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" 
-            style={{ width: 'var(--icon-size-small)', height: 'var(--icon-size-small)' }}
+            className="absolute pointer-events-none"
+            style={{ 
+              width: '16px', 
+              height: '16px',
+              left: '14px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              color: '#71717A',
+              strokeWidth: 2
+            }}
           />
           <input
             type="text"
             placeholder="Search properties, clients..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="form-input focus-ring"
+            className="w-full"
             style={{
-              height: 'var(--search-height)',
-              background: '#141416',
-              border: '1px solid rgba(255,255,255,0.1)',
-              paddingLeft: '48px',
-              paddingRight: '16px'
+              height: '36px',
+              background: 'rgba(255, 255, 255, 0.05)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              borderRadius: '8px',
+              paddingLeft: '40px',
+              paddingRight: '16px',
+              fontSize: '14px',
+              color: '#E4E4E7',
+              outline: 'none',
+              transition: 'all 0.2s ease'
+            }}
+            onFocus={(e) => {
+              e.target.style.borderColor = 'rgba(59, 130, 246, 0.3)';
+              e.target.style.background = 'rgba(255, 255, 255, 0.08)';
+              e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)';
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+              e.target.style.background = 'rgba(255, 255, 255, 0.05)';
+              e.target.style.boxShadow = 'none';
             }}
           />
         </div>

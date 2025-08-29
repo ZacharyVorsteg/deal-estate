@@ -1,0 +1,88 @@
+/* Search Bar Icon and Input Fixes */
+
+/* Search container */
+.search-bar {
+  position: relative !important;
+  width: 400px !important;
+  max-width: 100% !important;
+}
+
+/* Search icon styling */
+.search-bar svg {
+  position: absolute !important;
+  width: 16px !important;
+  height: 16px !important;
+  left: 14px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  color: #71717A !important;
+  stroke-width: 2 !important;
+  pointer-events: none !important;
+  z-index: 1 !important;
+}
+
+/* Search input */
+.search-bar input {
+  width: 100% !important;
+  height: 36px !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 8px !important;
+  padding: 0 16px 0 40px !important;
+  font-size: 14px !important;
+  color: #E4E4E7 !important;
+  outline: none !important;
+  transition: all 0.2s ease !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+}
+
+/* Placeholder text */
+.search-bar input::placeholder {
+  color: #6B6B6F !important;
+  opacity: 1 !important;
+}
+
+/* Focus state */
+.search-bar input:focus {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(59, 130, 246, 0.3) !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+}
+
+/* Hover state */
+.search-bar input:hover:not(:focus) {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Fix for Safari/WebKit browsers */
+@media not all and (min-resolution:.001dpcm) {
+  @supports (-webkit-appearance:none) {
+    .search-bar svg {
+      -webkit-transform: translateY(-50%) !important;
+    }
+  }
+}
+
+/* Ensure icon doesn't interfere with text */
+.search-bar input::-webkit-search-decoration,
+.search-bar input::-webkit-search-cancel-button,
+.search-bar input::-webkit-search-results-button,
+.search-bar input::-webkit-search-results-decoration {
+  display: none !important;
+}
+
+/* Firefox specific fixes */
+@-moz-document url-prefix() {
+  .search-bar svg {
+    color: #71717A !important;
+  }
+}
+
+/* Ensure proper icon rendering */
+.search-bar svg path {
+  stroke: currentColor !important;
+  fill: none !important;
+}
