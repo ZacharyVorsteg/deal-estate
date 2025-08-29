@@ -3,11 +3,65 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta name="description" content="Deal estate CRM" />
-    <title>Deal Estate CRM</title>
+    <meta name="theme-color" content="#ed7411" />
+    <meta name="description" content="Professional Industrial Real Estate Management CRM - Streamline property management, client relationships, and deal tracking" />
+    <meta name="keywords" content="real estate, CRM, industrial property, property management, deal tracking" />
+    <meta name="author" content="Deal Estate" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://lively-gecko-d1d0de.netlify.app/" />
+    <meta property="og:title" content="Deal Estate CRM - Professional Edition" />
+    <meta property="og:description" content="Professional Industrial Real Estate Management CRM" />
+    <meta property="og:image" content="https://lively-gecko-d1d0de.netlify.app/og-image.jpg" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://lively-gecko-d1d0de.netlify.app/" />
+    <meta property="twitter:title" content="Deal Estate CRM - Professional Edition" />
+    <meta property="twitter:description" content="Professional Industrial Real Estate Management CRM" />
+    <meta property="twitter:image" content="https://lively-gecko-d1d0de.netlify.app/og-image.jpg" />
+    
+    <title>Deal Estate CRM - Professional Edition</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <!-- Include Tailwind CSS via CDN for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Tailwind Config -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: {
+                50: '#fef7ed',
+                100: '#fdedd4',
+                200: '#fad7a8',
+                300: '#f6bb71',
+                400: '#f19538',
+                500: '#ed7411',
+                600: '#de5a06',
+                700: '#b84406',
+                800: '#93350c',
+                900: '#772e0d',
+              }
+            },
+            fontFamily: {
+              'sans': ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            },
+            animation: {
+              'fade-in-up': 'fadeInUp 0.6s ease-out',
+              'slide-in-right': 'slideInRight 0.6s ease-out',
+            }
+          }
+        }
+      }
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

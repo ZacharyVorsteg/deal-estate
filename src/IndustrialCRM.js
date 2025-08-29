@@ -494,43 +494,58 @@ const IndustrialCRM = () => {
    */
   const Sidebar = () => (
     <div
-      className={`fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ${
+      className={`fixed inset-y-0 left-0 z-50 w-64 bg-white/95 backdrop-blur-sm shadow-2xl border-r border-neutral-200 transform transition-all duration-300 ${
         showMobileMenu ? 'translate-x-0' : '-translate-x-full'
       } lg:translate-x-0 lg:static lg:inset-0`}
     >
       <div className="h-full flex flex-col">
-        <div className="p-6 border-b" style={{ borderColor: colors.border }}>
-          <h2 className="text-2xl font-bold" style={{ color: colors.primary }}>Deal Estate</h2>
-          <p className="text-sm mt-1" style={{ color: colors.textSecondary }}>
-            Professional Edition
-          </p>
+        {/* Logo Section */}
+        <div className="p-6 border-b border-neutral-200">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center">
+              <Building2 className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <h2 className="text-2xl font-bold bg-gradient-to-r from-neutral-800 to-neutral-600 bg-clip-text text-transparent">
+                Deal Estate
+              </h2>
+              <p className="text-sm text-neutral-500 font-medium">
+                Professional Edition
+              </p>
+            </div>
+          </div>
         </div>
-        <nav className="flex-1 p-4">
+
+        {/* Navigation */}
+        <nav className="flex-1 p-4 space-y-2">
           <SidebarItem icon={Home} label="Dashboard" active={currentView === 'dashboard'} onClick={() => { setCurrentView('dashboard'); setShowMobileMenu(false); }} />
           <SidebarItem icon={Building2} label="Properties" active={currentView === 'properties'} onClick={() => { setCurrentView('properties'); setShowMobileMenu(false); }} />
           <SidebarItem icon={Users} label="Clients" active={currentView === 'clients'} onClick={() => { setCurrentView('clients'); setShowMobileMenu(false); }} />
           <SidebarItem icon={Bell} label="Notifications" active={currentView === 'notifications'} onClick={() => { setCurrentView('notifications'); setShowMobileMenu(false); }} />
           <SidebarItem icon={TrendingUp} label="Analytics" active={currentView === 'analytics'} onClick={() => { setCurrentView('analytics'); setShowMobileMenu(false); }} />
-          <div className="mt-8 pt-8 border-t" style={{ borderColor: colors.border }}>
+          
+          <div className="mt-8 pt-8 border-t border-neutral-200">
             <SidebarItem icon={Settings} label="Settings" active={currentView === 'settings'} onClick={() => { setCurrentView('settings'); setShowMobileMenu(false); }} />
             <SidebarItem icon={CreditCard} label="Billing" active={currentView === 'billing'} onClick={() => { setCurrentView('billing'); setShowMobileMenu(false); }} />
           </div>
         </nav>
-        <div className="p-4 border-t" style={{ borderColor: colors.border }}>
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: colors.accent, color: 'white' }}>
+
+        {/* User Profile Section */}
+        <div className="p-4 border-t border-neutral-200">
+          <div className="flex items-center gap-3 mb-4 p-3 rounded-xl bg-neutral-50 hover:bg-neutral-100 transition-colors duration-200">
+            <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center text-white font-semibold text-lg shadow-md">
               {userProfile.name.charAt(0)}
             </div>
-            <div>
-              <p className="font-semibold text-sm" style={{ color: colors.textPrimary }}>{userProfile.name}</p>
-              <p className="text-xs" style={{ color: colors.textSecondary }}>{userProfile.company}</p>
+            <div className="flex-1">
+              <p className="font-semibold text-sm text-neutral-800">{userProfile.name}</p>
+              <p className="text-xs text-neutral-500">{userProfile.company}</p>
             </div>
           </div>
           <button
             onClick={handleLogout}
-            className="w-full text-left text-sm px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors"
-            style={{ color: colors.danger }}
+            className="w-full text-left text-sm px-4 py-3 rounded-xl hover:bg-red-50 hover:text-red-600 transition-all duration-200 text-red-500 font-medium flex items-center gap-2"
           >
+            <ShieldCheck className="w-4 h-4" />
             Sign Out
           </button>
         </div>
@@ -544,11 +559,21 @@ const IndustrialCRM = () => {
   const SidebarItem = ({ icon: Icon, label, active, onClick }) => (
     <button
       onClick={onClick}
-      className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg mb-1 transition-all ${active ? 'shadow-sm' : 'hover:bg-gray-50'}`}
-      style={{ backgroundColor: active ? colors.accent : 'transparent', color: active ? 'white' : colors.textPrimary }}
+      className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${
+        active 
+          ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-md' 
+          : 'text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900'
+      }`}
     >
-      <Icon className="w-5 h-5" />
+      <Icon className={`w-5 h-5 transition-transform duration-200 ${
+        active ? 'text-white' : 'text-neutral-500 group-hover:text-neutral-700'
+      }`} />
       <span className="font-medium">{label}</span>
+      
+      {/* Active indicator */}
+      {active && (
+        <div className="ml-auto w-2 h-2 bg-white rounded-full opacity-80"></div>
+      )}
     </button>
   );
 
@@ -556,28 +581,42 @@ const IndustrialCRM = () => {
    * Top bar with search and notifications. Collapsible menu on mobile.
    */
   const TopBar = () => (
-    <div className="bg-white shadow-sm px-6 py-4 flex items-center justify-between">
-      <button onClick={() => setShowMobileMenu(!showMobileMenu)} className="lg:hidden">
-        <Menu className="w-6 h-6" style={{ color: colors.textPrimary }} />
+    <div className="bg-white/80 backdrop-blur-sm border-b border-neutral-200 px-6 py-4 flex items-center justify-between sticky top-0 z-40">
+      <button 
+        onClick={() => setShowMobileMenu(!showMobileMenu)} 
+        className="lg:hidden p-2 rounded-xl hover:bg-neutral-100 transition-colors duration-200"
+      >
+        <Menu className="w-6 h-6 text-neutral-700" />
       </button>
+      
       <div className="flex-1 max-w-xl mx-4">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5" style={{ color: colors.textSecondary }} />
+          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-neutral-400" />
           <input
             type="text"
             placeholder="Search properties, clients..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 rounded-lg border focus:outline-none focus:ring-2"
-            style={{ borderColor: colors.border }}
+            className="w-full pl-12 pr-4 py-3 rounded-xl border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 bg-white/50 backdrop-blur-sm"
           />
         </div>
       </div>
+      
       <div className="flex items-center gap-4">
-        <button className="relative p-2 rounded-lg hover:bg-gray-100">
-          <Bell className="w-5 h-5" style={{ color: colors.textSecondary }} />
-          {notifications.length > 0 && <span className="absolute top-0 right-0 w-2 h-2 rounded-full" style={{ backgroundColor: colors.danger }} />}
+        <button className="relative p-3 rounded-xl hover:bg-neutral-100 transition-all duration-200 group">
+          <Bell className="w-5 h-5 text-neutral-600 group-hover:text-neutral-800" />
+          {notifications.length > 0 && (
+            <span className="absolute top-2 right-2 w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>
+          )}
         </button>
+        
+        {/* User Profile Quick Access */}
+        <div className="hidden md:flex items-center gap-3 p-2 rounded-xl hover:bg-neutral-50 transition-colors duration-200 cursor-pointer">
+          <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center text-white text-sm font-semibold">
+            {userProfile.name.charAt(0)}
+          </div>
+          <span className="text-sm font-medium text-neutral-700">{userProfile.name}</span>
+        </div>
       </div>
     </div>
   );
@@ -587,39 +626,71 @@ const IndustrialCRM = () => {
    * input will work.
    */
   const LoginView = () => (
-    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: colors.background }}>
-      <div className="max-w-md w-full">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-neutral-50 via-white to-primary-50 p-4">
+      <div className="max-w-md w-full animate-fade-in-up">
+        {/* Logo and Branding */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-2" style={{ color: colors.primary }}>Deal Estate</h1>
-          <p style={{ color: colors.textSecondary }}>Professional Industrial Real Estate Management</p>
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-primary-500 to-primary-600 rounded-2xl shadow-lg mb-6">
+            <Building2 className="w-10 h-10 text-white" />
+          </div>
+          <h1 className="text-4xl font-bold mb-3 bg-gradient-to-r from-neutral-800 to-neutral-600 bg-clip-text text-transparent">
+            Deal Estate
+          </h1>
+          <p className="text-lg text-neutral-600 font-medium">
+            Professional Industrial Real Estate Management
+          </p>
         </div>
-        <div className="bg-white rounded-2xl shadow-xl p-8">
-          <h2 className="text-2xl font-bold mb-6" style={{ color: colors.primary }}>Welcome Back</h2>
-          <div>
-            <div className="mb-4">
-              <label className="block text-sm font-medium mb-2" style={{ color: colors.textPrimary }}>Username</label>
+
+        {/* Login Form Card */}
+        <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl border border-white/20 p-8 hover:shadow-3xl transition-all duration-500">
+          <h2 className="text-2xl font-bold mb-8 text-center text-neutral-800">
+            Welcome Back
+          </h2>
+          
+          <div className="space-y-6">
+            <div className="form-group">
+              <label className="form-label">Username</label>
               <input
                 type="text"
                 value={loginForm.username}
                 onChange={(e) => setLoginForm({ ...loginForm, username: e.target.value })}
-                className="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 transition-all"
-                style={{ borderColor: colors.border }}
+                className="input-enhanced focus-ring"
+                placeholder="Enter your username"
               />
             </div>
-            <div className="mb-6">
-              <label className="block text-sm font-medium mb-2" style={{ color: colors.textPrimary }}>Password</label>
+            
+            <div className="form-group">
+              <label className="form-label">Password</label>
               <input
                 type="password"
                 value={loginForm.password}
                 onChange={(e) => setLoginForm({ ...loginForm, password: e.target.value })}
-                className="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 transition-all"
-                style={{ borderColor: colors.border }}
+                className="input-enhanced focus-ring"
+                placeholder="Enter your password"
               />
             </div>
-            <button onClick={handleLogin} className="w-full py-3 px-4 rounded-lg font-semibold text-white transition-all hover:shadow-lg" style={{ backgroundColor: colors.accent }}>
+            
+            <button 
+              onClick={handleLogin} 
+              className="btn-primary w-full text-lg py-4 focus-ring"
+            >
               Sign In
             </button>
           </div>
+
+          {/* Demo Credentials Hint */}
+          <div className="mt-6 p-4 bg-neutral-50 rounded-xl border border-neutral-200">
+            <p className="text-sm text-neutral-600 text-center">
+              <span className="font-medium">Demo Credentials:</span> admin / admin
+            </p>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="text-center mt-8">
+          <p className="text-sm text-neutral-500">
+            Professional Edition • Secure & Reliable
+          </p>
         </div>
       </div>
     </div>
@@ -714,15 +785,20 @@ const IndustrialCRM = () => {
    * Card summarising a numeric metric. Displays icon, value and trend.
    */
   const MetricCard = ({ title, value, icon: Icon, trend, color }) => (
-    <div className="bg-white rounded-xl shadow-sm p-6">
+    <div className="metric-card hover-lift group">
       <div className="flex items-center justify-between mb-4">
-        <div className="w-12 h-12 rounded-lg flex items-center justify-center" style={{ backgroundColor: color + '20' }}>
-          <Icon className="w-6 h-6" style={{ color }} />
+        <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-gradient-to-br from-primary-50 to-primary-100 group-hover:from-primary-100 group-hover:to-primary-200 transition-all duration-300">
+          <Icon className="w-7 h-7 text-primary-600" />
         </div>
-        <span className="text-sm font-medium" style={{ color: colors.success }}>{trend}</span>
+        <span className="text-sm font-semibold px-3 py-1 rounded-full bg-success-50 text-success-700 border border-success-200">
+          {trend}
+        </span>
       </div>
-      <h3 className="text-2xl font-bold mb-1" style={{ color: colors.textPrimary }}>{value}</h3>
-      <p className="text-sm" style={{ color: colors.textSecondary }}>{title}</p>
+      <h3 className="metric-value mb-2">{value}</h3>
+      <p className="metric-label">{title}</p>
+      
+      {/* Subtle accent line */}
+      <div className="mt-4 w-12 h-1 bg-gradient-to-r from-primary-400 to-primary-500 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
     </div>
   );
 
@@ -765,42 +841,57 @@ const IndustrialCRM = () => {
    * Small card showing summary information for a property in a list.
    */
   const PropertyCard = ({ property, onClick }) => (
-    <div onClick={onClick} className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-lg transition-all cursor-pointer">
+    <div onClick={onClick} className="card-hover overflow-hidden cursor-pointer group">
       {property.image ? (
-        <img src={property.image} alt={property.title} className="w-full h-48 object-cover" />
+        <div className="relative overflow-hidden">
+          <img src={property.image} alt={property.title} className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        </div>
       ) : (
-        <div className="w-full h-48 flex items-center justify-center" style={{ backgroundColor: colors.background }}>
-          <Building2 className="w-12 h-12" style={{ color: colors.textSecondary }} />
+        <div className="w-full h-48 flex items-center justify-center bg-gradient-to-br from-neutral-100 to-neutral-200 group-hover:from-neutral-200 group-hover:to-neutral-300 transition-all duration-300">
+          <Building2 className="w-16 h-16 text-neutral-400" />
         </div>
       )}
+      
       <div className="p-6">
-        <div className="flex items-start justify-between mb-3">
-          <h3 className="text-lg font-semibold" style={{ color: colors.textPrimary }}>{property.title}</h3>
-          <span className={`px-2 py-1 text-xs font-medium rounded-full ${property.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>{property.status}</span>
+        <div className="flex items-start justify-between mb-4">
+          <h3 className="text-lg font-semibold text-neutral-800 group-hover:text-primary-600 transition-colors duration-200">
+            {property.title}
+          </h3>
+          <span className={`px-3 py-1 text-xs font-semibold rounded-full ${
+            property.status === 'active' 
+              ? 'bg-success-50 text-success-700 border border-success-200' 
+              : 'bg-neutral-100 text-neutral-600 border border-neutral-200'
+          }`}>
+            {property.status}
+          </span>
         </div>
-        <p className="text-2xl font-bold mb-3" style={{ color: colors.accent }}>
+        
+        <p className="text-2xl font-bold mb-4 text-primary-600">
           ${property.price.toLocaleString()}
         </p>
-        <div className="space-y-2 text-sm" style={{ color: colors.textSecondary }}>
+        
+        <div className="space-y-3 text-sm text-neutral-600 mb-4">
           <p className="flex items-center gap-2">
-            <MapPin className="w-4 h-4" />
+            <MapPin className="w-4 h-4 text-primary-500" />
             {property.city}, {property.state}
           </p>
           {property.sqft && (
             <p className="flex items-center gap-2">
-              <Building2 className="w-4 h-4" />
+              <Building2 className="w-4 h-4 text-primary-500" />
               {property.sqft.toLocaleString()} sq ft
             </p>
           )}
         </div>
-        <div className="mt-4 pt-4 border-t flex items-center justify-between text-sm" style={{ borderColor: colors.border, color: colors.textSecondary }}>
+        
+        <div className="pt-4 border-t border-neutral-200 flex items-center justify-between text-sm text-neutral-500">
           <span className="flex items-center gap-1">
             <Eye className="w-4 h-4" />
-            {property.views} views
+            {property.views || 0} views
           </span>
           <span className="flex items-center gap-1">
             <Mail className="w-4 h-4" />
-            {property.inquiries} inquiries
+            {property.inquiries || 0} inquiries
           </span>
         </div>
       </div>
