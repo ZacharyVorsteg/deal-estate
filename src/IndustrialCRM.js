@@ -1106,7 +1106,7 @@ const IndustrialCRM = () => {
                 </div>
                 
                 <div className="kpi-sparkline">
-                  <svg width="100%" height="32" viewBox="0 0 100 32">
+                  <svg width="100%" height="24" viewBox="0 0 100 24">
                     <defs>
                       <linearGradient id={`kpi-gradient-${index}`} x1="0%" y1="0%" x2="0%" y2="100%">
                         <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.3" />
@@ -1117,7 +1117,7 @@ const IndustrialCRM = () => {
                       fill={`url(#kpi-gradient-${index})`}
                       stroke="#3B82F6"
                       strokeWidth="2"
-                      points="0,24 20,20 40,22 60,12 80,16 100,8 100,32 0,32"
+                      points="0,20 20,16 40,18 60,8 80,12 100,4 100,24 0,24"
                     />
                   </svg>
                 </div>
