@@ -1,0 +1,317 @@
+/* PREMIUM DARK THEME - COMPLETE OVERRIDE */
+
+/* Force dark background everywhere */
+* {
+  box-sizing: border-box !important;
+}
+
+html, body, #root {
+  background: #0A0A0B !important;
+  color: #E4E4E7 !important;
+  min-height: 100vh !important;
+}
+
+/* Override ALL backgrounds */
+div[class*="bg-"],
+div[class*="min-h-screen"] {
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+/* Premium KPI Cards - COMPLETE STYLING */
+.premium-kpi,
+div[class*="rounded-lg"],
+div[class*="rounded-xl"] {
+  background: linear-gradient(145deg, #1a1a1d, #16161a) !important;
+  box-shadow: 
+    20px 20px 60px #0a0a0c,
+    -20px -20px 60px #202024,
+    inset 1px 1px 2px rgba(255,255,255,0.03) !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  border-radius: 16px !important;
+  padding: 20px !important;
+  position: relative !important;
+  overflow: hidden !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+.premium-kpi::before,
+div[class*="rounded-lg"]::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 1px !important;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(255,255,255,0.1), 
+    transparent) !important;
+}
+
+.premium-kpi:hover,
+div[class*="rounded-lg"]:hover,
+div[class*="rounded-xl"]:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 
+    25px 25px 75px #0a0a0c,
+    -25px -25px 75px #202024,
+    inset 1px 1px 3px rgba(255,255,255,0.05) !important;
+  border-color: rgba(59, 130, 246, 0.2) !important;
+}
+
+/* KPI Icon Styling */
+.kpi-icon {
+  width: 40px !important;
+  height: 40px !important;
+  background: linear-gradient(145deg, #2563eb, #1e40af) !important;
+  box-shadow: 
+    5px 5px 10px rgba(0,0,0,0.5),
+    inset 1px 1px 2px rgba(255,255,255,0.2) !important;
+  border-radius: 12px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 20px !important;
+  margin-bottom: 16px !important;
+}
+
+/* KPI Values */
+.kpi-value,
+div[class*="text-3xl"],
+div[class*="text-2xl"] {
+  font-size: 32px !important;
+  font-weight: 700 !important;
+  background: linear-gradient(135deg, #ffffff, #60a5fa) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  text-shadow: 0 0 30px rgba(59, 130, 246, 0.3) !important;
+  margin-bottom: 8px !important;
+}
+
+/* KPI Labels */
+.kpi-label,
+div[class*="text-xs"],
+div[class*="uppercase"] {
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+  color: #71717A !important;
+  opacity: 0.8 !important;
+}
+
+/* Trend Indicators */
+.kpi-trend,
+div[class*="text-green"],
+div[class*="text-red"] {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  padding: 4px 10px !important;
+  background: linear-gradient(145deg, 
+    rgba(16, 185, 129, 0.1), 
+    rgba(16, 185, 129, 0.05)) !important;
+  border: 1px solid rgba(16, 185, 129, 0.2) !important;
+  border-radius: 8px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  color: #10b981 !important;
+  position: absolute !important;
+  top: 20px !important;
+  right: 20px !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+/* Premium Buttons - Dark Theme */
+button,
+.btn-premium,
+div[class*="bg-blue-500"],
+div[class*="bg-blue-600"] {
+  background: linear-gradient(145deg, #1a1a2e, #16213e) !important;
+  box-shadow: 
+    5px 5px 15px #0a0a0c,
+    -5px -5px 15px #202024,
+    inset 1px 1px 2px rgba(59, 130, 246, 0.2) !important;
+  border: 1px solid rgba(59, 130, 246, 0.2) !important;
+  color: #60a5fa !important;
+  padding: 12px 24px !important;
+  border-radius: 12px !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+button::before,
+.btn-premium::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: -100% !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(59, 130, 246, 0.2), 
+    transparent) !important;
+  transition: left 0.5s ease !important;
+}
+
+button:hover::before,
+.btn-premium:hover::before {
+  left: 100% !important;
+}
+
+button:hover,
+.btn-premium:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 
+    7px 7px 20px #0a0a0c,
+    -7px -7px 20px #202024,
+    inset 1px 1px 3px rgba(59, 130, 246, 0.3) !important;
+  border-color: rgba(59, 130, 246, 0.4) !important;
+  color: #93c5fd !important;
+}
+
+/* Glass Cards */
+.glass-card,
+div[class*="backdrop-blur"] {
+  background: linear-gradient(145deg, 
+    rgba(26, 26, 29, 0.8), 
+    rgba(22, 22, 26, 0.8)) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  box-shadow: 
+    20px 20px 60px rgba(0, 0, 0, 0.5),
+    -20px -20px 60px rgba(32, 32, 36, 0.1),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.03) !important;
+  border-radius: 16px !important;
+  padding: 20px !important;
+}
+
+/* Property Cards */
+.premium-property {
+  background: linear-gradient(145deg, #1a1a1d, #16161a) !important;
+  box-shadow: 
+    10px 10px 30px #0a0a0c,
+    -10px -10px 30px #202024,
+    inset 1px 1px 2px rgba(255,255,255,0.03) !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  border-radius: 16px !important;
+  overflow: hidden !important;
+  transition: all 0.3s ease !important;
+}
+
+.premium-property:hover {
+  transform: translateY(-4px) scale(1.02) !important;
+  box-shadow: 
+    15px 15px 45px #0a0a0c,
+    -15px -15px 45px #202024,
+    inset 1px 1px 3px rgba(255,255,255,0.05) !important;
+  border-color: rgba(59, 130, 246, 0.3) !important;
+}
+
+/* Sparkline Charts */
+.kpi-sparkline svg {
+  filter: drop-shadow(0 0 3px rgba(59, 130, 246, 0.5)) !important;
+}
+
+/* Text Colors */
+h1, h2, h3, h4, h5, h6 {
+  color: #ffffff !important;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.1) !important;
+}
+
+p, span, div {
+  color: #e4e4e7 !important;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 10px !important;
+  background: #0a0a0b !important;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(145deg, #2563eb, #1e40af) !important;
+  border-radius: 5px !important;
+  box-shadow: inset 1px 1px 2px rgba(255,255,255,0.2) !important;
+}
+
+/* Status Badges */
+.property-badge,
+span[class*="bg-green"],
+span[class*="bg-blue"] {
+  background: linear-gradient(145deg, 
+    rgba(16, 185, 129, 0.2), 
+    rgba(16, 185, 129, 0.1)) !important;
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+  color: #10b981 !important;
+  padding: 6px 12px !important;
+  border-radius: 8px !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  backdrop-filter: blur(10px) !important;
+  box-shadow: 
+    2px 2px 5px rgba(0,0,0,0.3),
+    inset 1px 1px 2px rgba(255,255,255,0.1) !important;
+}
+
+/* Input Fields */
+input, select, textarea {
+  background: linear-gradient(145deg, #16161a, #1a1a1d) !important;
+  box-shadow: 
+    inset 5px 5px 10px #0a0a0c,
+    inset -5px -5px 10px #202024 !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  color: #e4e4e7 !important;
+  padding: 12px !important;
+  border-radius: 10px !important;
+  font-size: 14px !important;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none !important;
+  border-color: rgba(59, 130, 246, 0.3) !important;
+  box-shadow: 
+    inset 5px 5px 10px #0a0a0c,
+    inset -5px -5px 10px #202024,
+    0 0 20px rgba(59, 130, 246, 0.2) !important;
+}
+
+/* Animations */
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Apply animations */
+.premium-kpi {
+  animation: pulse 3s ease-in-out infinite !important;
+}
+
+/* Ensure everything uses the dark theme */
+div, section, main, aside, nav, header, footer {
+  background-color: transparent !important;
+  color: #e4e4e7 !important;
+}

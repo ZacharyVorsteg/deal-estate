@@ -1088,20 +1088,66 @@ const IndustrialCRM = () => {
                 trend: 'up'
               }
             ].map((metric, index) => (
-              <div key={index} className="premium-kpi slide-up">
-                <div className="kpi-icon">
+              <div key={index} className="premium-kpi slide-up" style={{
+                background: 'linear-gradient(145deg, #1a1a1d, #16161a)',
+                boxShadow: '20px 20px 60px #0a0a0c, -20px -20px 60px #202024, inset 1px 1px 2px rgba(255,255,255,0.03)',
+                border: '1px solid rgba(255, 255, 255, 0.05)',
+                borderRadius: '16px',
+                padding: '20px',
+                minHeight: '140px',
+                position: 'relative'
+              }}>
+                <div className="kpi-icon" style={{
+                  width: '40px',
+                  height: '40px',
+                  background: 'linear-gradient(145deg, #2563eb, #1e40af)',
+                  boxShadow: '5px 5px 10px rgba(0,0,0,0.5), inset 1px 1px 2px rgba(255,255,255,0.2)',
+                  borderRadius: '12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '20px',
+                  marginBottom: '16px'
+                }}>
                   {metric.icon}
                 </div>
                 
-                <div className="kpi-value">
+                <div className="kpi-value" style={{
+                  fontSize: '32px',
+                  fontWeight: '700',
+                  background: 'linear-gradient(135deg, #ffffff, #60a5fa)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                  marginBottom: '8px'
+                }}>
                   {metric.value}
                 </div>
                 
-                <div className="kpi-label">
+                <div className="kpi-label" style={{
+                  fontSize: '11px',
+                  fontWeight: '600',
+                  textTransform: 'uppercase',
+                  letterSpacing: '1px',
+                  color: '#71717A',
+                  opacity: '0.8'
+                }}>
                   {metric.label}
                 </div>
                 
-                <div className={`kpi-trend ${metric.trend === 'up' ? 'positive' : metric.trend === 'down' ? 'negative' : 'positive'}`}>
+                <div className={`kpi-trend ${metric.trend === 'up' ? 'positive' : metric.trend === 'down' ? 'negative' : 'positive'}`} style={{
+                  position: 'absolute',
+                  top: '20px',
+                  right: '20px',
+                  padding: '4px 10px',
+                  background: metric.trend === 'up' ? 'linear-gradient(145deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05))' : 'linear-gradient(145deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.05))',
+                  border: metric.trend === 'up' ? '1px solid rgba(16, 185, 129, 0.2)' : '1px solid rgba(239, 68, 68, 0.2)',
+                  borderRadius: '8px',
+                  fontSize: '12px',
+                  fontWeight: '600',
+                  color: metric.trend === 'up' ? '#10b981' : '#ef4444',
+                  backdropFilter: 'blur(10px)'
+                }}>
                   {metric.trend === 'up' ? '↗' : metric.trend === 'down' ? '↘' : '→'} {metric.change}
                 </div>
                 
