@@ -36,8 +36,7 @@ import {
 } from 'lucide-react';
 
 
-/
-**
+/**
  * Main CRM component. This encapsulates all the views, state and logic for
  * managing properties, clients and notifications. The UI is styled using
  * TailwindCSS classes that are included via CDN in index.html.
@@ -100,10 +99,7 @@ const IndustrialCRM = () => {
     danger: '#ff4757',
     background: '#f8f9fa',
     cardBg: '#ffffff',
-    t
-
-      extPrimary: '#1a1a1a',
-
+    textPrimary: '#1a1a1a',
     textSecondary: '#6c757d',
     border: '#e9ecef'
   };

@@ -1,0 +1,19 @@
+[build]
+  command = "pnpm build"
+  publish = "build"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[context.production.environment]
+  REACT_APP_SUPABASE_URL = "production_supabase_url"
+  REACT_APP_SUPABASE_ANON_KEY = "production_supabase_anon_key"
+
+[context.deploy-preview.environment]
+  REACT_APP_SUPABASE_URL = "preview_supabase_url"
+  REACT_APP_SUPABASE_ANON_KEY = "preview_supabase_anon_key"

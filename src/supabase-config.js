@@ -5,8 +5,8 @@ const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
-export const signUp = async (email, passwo) => {
-  const { data, error } = await supabase.auth.signUp
+export const signUp = async (email, password, metadata = {}) => {
+  const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
