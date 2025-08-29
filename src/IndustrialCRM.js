@@ -276,47 +276,47 @@ const IndustrialCRM = () => {
     setIsSubmitting(true);
     
     try {
-      const newProperty = {
-        id: Date.now(),
+    const newProperty = {
+      id: Date.now(),
         title: propertyForm.title.trim(),
         city: propertyForm.city.trim(),
         state: propertyForm.state.trim(),
-        price: parseFloat(propertyForm.price),
+      price: parseFloat(propertyForm.price),
         property_type: propertyForm.property_type || null,
-        loading_docks: propertyForm.loading_docks ? parseInt(propertyForm.loading_docks) : null,
-        ceiling_height: propertyForm.ceiling_height ? parseInt(propertyForm.ceiling_height) : null,
-        sqft: propertyForm.sqft ? parseInt(propertyForm.sqft) : null,
+      loading_docks: propertyForm.loading_docks ? parseInt(propertyForm.loading_docks) : null,
+      ceiling_height: propertyForm.ceiling_height ? parseInt(propertyForm.ceiling_height) : null,
+      sqft: propertyForm.sqft ? parseInt(propertyForm.sqft) : null,
         year_built: propertyForm.year_built || null,
         zoning: propertyForm.zoning || null,
         description: propertyForm.description || null,
-        image: propertyForm.image,
-        status: 'active',
-        created_at: new Date().toISOString(),
-        views: 0,
-        inquiries: 0
-      };
+      image: propertyForm.image,
+      status: 'active',
+      created_at: new Date().toISOString(),
+      views: 0,
+      inquiries: 0
+    };
 
       setProperties(prev => [newProperty, ...prev]);
       
-      // Notify matching clients
-      const activeMatchingClients = matchingClients.filter((client) => client.status === 'active');
-      activeMatchingClients.forEach((client) => {
-        sendNotification(client, newProperty);
-      });
+    // Notify matching clients
+    const activeMatchingClients = matchingClients.filter((client) => client.status === 'active');
+    activeMatchingClients.forEach((client) => {
+      sendNotification(client, newProperty);
+    });
 
       // Show success message
       setSuccessMessage(`Property added successfully! ${activeMatchingClients.length} active client(s) notified.`);
       
-      // Reset form
-      setPropertyForm({
-        title: '', city: '', state: '', price: '', property_type: '', loading_docks: '',
-        ceiling_height: '', image: null, sqft: '', year_built: '', zoning: '', description: ''
-      });
-      setMatchingClients([]);
+    // Reset form
+    setPropertyForm({
+      title: '', city: '', state: '', price: '', property_type: '', loading_docks: '',
+      ceiling_height: '', image: null, sqft: '', year_built: '', zoning: '', description: ''
+    });
+    setMatchingClients([]);
       
       // Navigate back after success
       setTimeout(() => {
-        setCurrentView('properties');
+    setCurrentView('properties');
         setSuccessMessage('');
       }, 2000);
       
@@ -418,10 +418,10 @@ const IndustrialCRM = () => {
     // Add to lease history
     const client = clients.find(c => c.id === clientId);
     const property = properties.find(p => p.id === propertyId);
-    const leaseRecord = {
-      id: Date.now(),
-      clientId,
-      propertyId,
+      const leaseRecord = {
+        id: Date.now(),
+        clientId,
+        propertyId,
       clientName: client?.name,
       propertyTitle: property?.title,
       leasedAt: new Date().toISOString(),
@@ -965,7 +965,7 @@ const IndustrialCRM = () => {
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-primary-800 to-primary-900 rounded-2xl shadow-2xl mb-6">
             <Building2 className="w-10 h-10 text-white" />
-          </div>
+        </div>
           <h1 className="text-4xl font-bold mb-3 bg-gradient-to-r from-primary-900 to-primary-700 bg-clip-text text-transparent font-display">
             Deal Estate
           </h1>
@@ -1048,28 +1048,21 @@ const IndustrialCRM = () => {
     };
 
     return (
-      <div 
-        className="p-6 min-h-screen" 
-        style={{
-          background: 'linear-gradient(180deg, #0A0A0B 0%, #0F0F10 100%)',
-          color: '#E4E4E7'
-        }}
-      >
+      <div className="p-6 min-h-screen bg-dark text-dark-secondary">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-white mb-2 font-display">Dashboard</h1>
-            <p className="text-lg text-gray-400">Welcome back! Here's what's happening with your properties.</p>
-          </div>
+        <div className="mb-8">
+            <h1 className="text-3xl font-bold text-dark-primary mb-2 font-display">Dashboard</h1>
+            <p className="text-lg text-dark-muted">Welcome back! Here's what's happening with your properties.</p>
+        </div>
 
           {/* Key Metrics Grid - 12 Column System */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            {[
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                        {[
               { 
                 label: 'ACTIVE PROPERTIES', 
                 value: activeProperties, 
                 change: '+12%',
-                color: 'from-green-500 to-emerald-600',
                 icon: '📊',
                 trend: 'up'
               },
@@ -1077,7 +1070,6 @@ const IndustrialCRM = () => {
                 label: 'ACTIVE CLIENTS', 
                 value: activeClients,
                 change: '+8%', 
-                color: 'from-blue-500 to-indigo-600',
                 icon: '👥',
                 trend: 'up'
               },
@@ -1085,7 +1077,6 @@ const IndustrialCRM = () => {
                 label: 'CONVERSION RATE', 
                 value: `${conversionRate}%`,
                 change: '+5%',
-                color: 'from-purple-500 to-pink-600',
                 icon: '📈',
                 trend: 'neutral'
               },
@@ -1093,61 +1084,42 @@ const IndustrialCRM = () => {
                 label: 'NOTIFICATIONS SENT', 
                 value: notifications.length,
                 change: '+23%',
-                color: 'from-amber-500 to-orange-600',
                 icon: '🔔',
                 trend: 'up'
               }
             ].map((metric, index) => (
-              <div key={index} className="group relative">
-                {/* Gradient background effect */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${metric.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-xl`} />
+              <div key={index} className="premium-kpi slide-up">
+                <div className="kpi-icon">
+                  {metric.icon}
+                </div>
                 
-                {/* Card */}
-                <div className="relative bg-gray-900/50 backdrop-blur-sm border border-gray-800 hover:border-gray-700 rounded-xl p-6 transition-all duration-200 hover:transform hover:-translate-y-1 hover:shadow-2xl">
-                  
-                  {/* Status indicator */}
-                  <div className="absolute top-3 right-3">
-                    <div className={`w-2 h-2 rounded-full ${metric.trend === 'up' ? 'bg-green-500' : metric.trend === 'down' ? 'bg-red-500' : 'bg-yellow-500'} animate-pulse`}>
-                      <div className={`absolute inset-0 rounded-full ${metric.trend === 'up' ? 'bg-green-500' : metric.trend === 'down' ? 'bg-red-500' : 'bg-yellow-500'} animate-ping`} />
-                    </div>
-                  </div>
-                  
-                  {/* Icon */}
-                  <div className="text-2xl mb-3">{metric.icon}</div>
-                  
-                  {/* Value */}
-                  <div className="text-3xl font-bold text-white mb-1">
-                    {metric.value}
-                  </div>
-                  
-                  {/* Label */}
-                  <div className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">
-                    {metric.label}
-                  </div>
-                  
-                  {/* Change indicator */}
-                  <div className={`inline-flex items-center text-xs font-medium ${metric.trend === 'up' ? 'text-green-400' : metric.trend === 'down' ? 'text-red-400' : 'text-yellow-400'}`}>
-                    {metric.trend === 'up' ? '↑' : metric.trend === 'down' ? '↓' : '→'} {metric.change}
-                  </div>
-                  
-                  {/* Mini chart */}
-                  <div className="mt-3 h-8">
-                    <svg className="w-full h-full" viewBox="0 0 100 32">
-                      <defs>
-                        <linearGradient id={`gradient-${index}`} x1="0%" y1="0%" x2="0%" y2="100%">
-                          <stop offset="0%" className={metric.trend === 'up' ? 'text-green-400' : 'text-gray-600'} stopColor="currentColor" stopOpacity="0.3" />
-                          <stop offset="100%" className={metric.trend === 'up' ? 'text-green-400' : 'text-gray-600'} stopColor="currentColor" stopOpacity="0" />
-                        </linearGradient>
-                      </defs>
-                      <polyline
-                        fill={`url(#gradient-${index})`}
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        className={metric.trend === 'up' ? 'text-green-400' : 'text-gray-600'}
-                        points="0,24 20,20 40,22 60,12 80,16 100,8 100,32 0,32"
-                      />
-                    </svg>
-                  </div>
+                <div className="kpi-value">
+                  {metric.value}
+                </div>
+                
+                <div className="kpi-label">
+                  {metric.label}
+                </div>
+                
+                <div className={`kpi-trend ${metric.trend === 'up' ? 'positive' : metric.trend === 'down' ? 'negative' : 'positive'}`}>
+                  {metric.trend === 'up' ? '↗' : metric.trend === 'down' ? '↘' : '→'} {metric.change}
+                </div>
+                
+                <div className="kpi-sparkline">
+                  <svg width="100%" height="32" viewBox="0 0 100 32">
+                    <defs>
+                      <linearGradient id={`kpi-gradient-${index}`} x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.3" />
+                        <stop offset="100%" stopColor="#3B82F6" stopOpacity="0" />
+                      </linearGradient>
+                    </defs>
+                    <polyline
+                      fill={`url(#kpi-gradient-${index})`}
+                      stroke="#3B82F6"
+                      strokeWidth="2"
+                      points="0,24 20,20 40,22 60,12 80,16 100,8 100,32 0,32"
+                    />
+                  </svg>
                 </div>
               </div>
             ))}
@@ -1165,8 +1137,8 @@ const IndustrialCRM = () => {
                     className="btn btn-primary text-sm py-2 px-4"
                   >
                     View All
-                  </button>
-                </div>
+              </button>
+            </div>
                 <div className="space-y-4">
                   {properties.slice(0, 5).map((property) => (
                     <div key={property.id} className="flex items-center gap-4 p-4 rounded-lg hover:bg-white/5 transition-colors duration-200">
@@ -1184,37 +1156,37 @@ const IndustrialCRM = () => {
                           }`}>
                             {property.status}
                           </span>
-                        </div>
-                      </div>
+                    </div>
+                  </div>
                       <button 
                         onClick={() => { setSelectedProperty(property); setCurrentView('property-detail'); }}
                         className="btn btn-secondary text-sm py-2 px-3"
                       >
                         View
                       </button>
-                    </div>
-                  ))}
+                </div>
+              ))}
                   {properties.length === 0 && (
                     <div className="text-center py-8 text-gray-500">
                       <Building2 className="w-12 h-12 mx-auto mb-3 text-gray-600" />
                       <p>No properties added yet</p>
-                    </div>
+            </div>
                   )}
-                </div>
+          </div>
               </div>
             </div>
 
             {/* Quick Actions & Stats - 4 columns */}
             <div className="lg:col-span-4 space-y-6">
               {/* Quick Actions */}
-              <div className="bg-black/20 backdrop-blur-sm rounded-xl p-6 border border-white/6">
-                <h3 className="text-lg font-semibold text-white mb-4 font-display">Quick Actions</h3>
+              <div className="glass-card p-6">
+                <h3 className="text-lg font-semibold text-dark-primary mb-4 font-display">Quick Actions</h3>
                 <div className="space-y-3">
                   <button 
                     onClick={() => setCurrentView('add-property')}
-                    className="w-full btn btn-primary text-left py-3 px-4"
+                    className="w-full btn-premium justify-start"
                   >
-                    <Plus className="w-4 h-4 inline mr-2" />
+                    <Plus className="w-4 h-4" />
                     Add Property
                   </button>
                   <button 
@@ -1230,29 +1202,29 @@ const IndustrialCRM = () => {
                   >
                     <TrendingUp className="w-4 h-4 inline mr-2" />
                     View Analytics
-                  </button>
-                </div>
+              </button>
+            </div>
               </div>
 
               {/* Recent Activity */}
-              <div className="bg-black/20 backdrop-blur-sm rounded-xl p-6 border border-white/6">
-                <h3 className="text-lg font-semibold text-white mb-4 font-display">Recent Activity</h3>
-                <div className="space-y-3">
+              <div className="glass-card p-6">
+                <h3 className="text-lg font-semibold text-dark-primary mb-4 font-display">Recent Activity</h3>
+            <div className="space-y-3">
                   {notifications.slice(0, 3).map((notification) => (
                     <div key={notification.id} className="flex items-start gap-3 p-3 rounded-lg bg-white/5">
                       <div className="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center">
                         <Bell className="w-4 h-4 text-blue-400" />
-                      </div>
-                      <div className="flex-1 min-w-0">
+                  </div>
+                  <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-white truncate">
                           Notification sent to {notification.clientName}
                         </p>
                         <p className="text-xs text-gray-400">
                           {new Date(notification.timestamp).toLocaleDateString()}
                         </p>
-                      </div>
-                    </div>
-                  ))}
+                  </div>
+                </div>
+              ))}
                   {notifications.length === 0 && (
                     <div className="text-center py-4 text-gray-500">
                       <p className="text-sm">No recent activity</p>
@@ -1324,7 +1296,7 @@ const IndustrialCRM = () => {
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full pl-12 pr-4 py-3 rounded-xl border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500 transition-all duration-200 bg-white shadow-sm"
                 />
-              </div>
+        </div>
             </div>
             
             <div className="flex gap-3">
@@ -1334,10 +1306,10 @@ const IndustrialCRM = () => {
                 className="px-4 py-3 rounded-xl border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500 transition-all duration-200 bg-white shadow-sm"
               >
                 <option value="all">All Status</option>
-                <option value="active">Active</option>
+              <option value="active">Active</option>
                 <option value="leased">Leased</option>
-                <option value="archived">Archived</option>
-              </select>
+              <option value="archived">Archived</option>
+            </select>
               
               <button
                 onClick={() => setCurrentView('add-property')}
@@ -1346,13 +1318,13 @@ const IndustrialCRM = () => {
                 <Plus className="w-5 h-5 mr-2" />
                 Add Property
               </button>
-            </div>
           </div>
+        </div>
 
           {/* Properties Grid */}
           {filteredProperties.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {filteredProperties.map((property) => (
+          {filteredProperties.map((property) => (
                 <PropertyCard
                   key={property.id}
                   property={property}
@@ -1389,93 +1361,78 @@ const IndustrialCRM = () => {
   /**
    * Small card showing summary information for a property in a list.
    */
-  const PropertyCard = ({ property, onClick }) => (
-    <div className="group relative bg-gray-900/50 backdrop-blur-sm border border-gray-800 hover:border-blue-500/50 rounded-xl overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/10 cursor-pointer">
-      {/* Premium overlay gradient */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10" />
-      
-      {/* Image with parallax effect */}
-      <div className="relative h-48 overflow-hidden">
+    const PropertyCard = ({ property, onClick }) => (
+    <div className="premium-property slide-up" onClick={onClick}>
+      <div className="property-image">
         {property.image ? (
           <img 
             src={property.image} 
             alt={property.title}
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
           />
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
-            <Building2 className="w-12 h-12 text-gray-700" />
+          <div className="w-full h-full bg-dark-secondary flex items-center justify-center">
+            <Building2 className="w-12 h-12 text-dark-muted" />
           </div>
         )}
         
-        {/* Status badge with glass effect */}
-        <div className="absolute top-3 left-3 z-20">
-          <span className={`
-            px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-md
-            ${property.status === 'active' 
-              ? 'bg-green-500/20 text-green-400 border border-green-500/30' 
-              : property.status === 'leased'
-              ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
-              : 'bg-gray-500/20 text-gray-400 border border-gray-500/30'}
-          `}>
-            {property.status.toUpperCase()}
-          </span>
+        <div className="property-overlay" />
+        
+        <div className={`property-badge ${property.status}`}>
+          {property.status.toUpperCase()}
         </div>
         
-        {/* Quick actions (visible on hover) */}
-        <div className="absolute top-3 right-3 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex gap-2">
+        <div className="property-actions">
           <button 
             onClick={(e) => { e.stopPropagation(); handleEditProperty(property); }}
-            className="p-2 bg-black/50 backdrop-blur-md rounded-lg hover:bg-black/70 transition-colors"
+            className="property-action-btn"
           >
-            <Edit2 className="w-4 h-4 text-white" />
+            <Edit2 size={16} />
           </button>
           <button 
             onClick={(e) => { e.stopPropagation(); onClick(); }}
-            className="p-2 bg-black/50 backdrop-blur-md rounded-lg hover:bg-black/70 transition-colors"
+            className="property-action-btn"
           >
-            <Eye className="w-4 h-4 text-white" />
+            <Eye size={16} />
           </button>
           <button 
             onClick={(e) => { e.stopPropagation(); handleDeleteProperty(property.id); }}
-            className="p-2 bg-black/50 backdrop-blur-md rounded-lg hover:bg-black/70 transition-colors"
+            className="property-action-btn"
           >
-            <Trash2 className="w-4 h-4 text-white" />
+            <Trash2 size={16} />
           </button>
         </div>
       </div>
       
-      {/* Content */}
-      <div className="p-5">
-        <h3 className="text-lg font-semibold text-white mb-2 group-hover:text-blue-400 transition-colors">
+      <div className="property-content">
+        <h3 className="property-title">
           {property.title}
         </h3>
         
-        {/* Price with animation */}
-        <div className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-3">
+        <div className="property-price">
           ${property.price?.toLocaleString()}
         </div>
         
-        {/* Metrics grid */}
-        <div className="grid grid-cols-2 gap-3 text-sm">
-          <div className="flex items-center text-gray-400">
-            <MapPin className="w-4 h-4 mr-1 text-gray-500" />
+        <div className="property-details">
+          <div className="property-detail">
+            <MapPin size={16} />
             {property.city}, {property.state}
           </div>
           {property.sqft && (
-            <div className="flex items-center text-gray-400">
-              <Building2 className="w-4 h-4 mr-1 text-gray-500" />
+            <div className="property-detail">
+              <Building2 size={16} />
               {property.sqft.toLocaleString()} sq ft
             </div>
           )}
         </div>
         
-        {/* Action buttons */}
-        <div className="mt-4 flex gap-2">
-          <button className="flex-1 py-2 bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 rounded-lg transition-colors text-sm font-medium">
+        <div className="property-buttons">
+          <button 
+            onClick={(e) => { e.stopPropagation(); onClick(); }}
+            className="btn-property-primary"
+          >
             View Details
           </button>
-          <button className="flex-1 py-2 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-lg transition-colors text-sm font-medium">
+          <button className="btn-property-secondary">
             Schedule Tour
           </button>
         </div>
@@ -2496,14 +2453,7 @@ const IndustrialCRM = () => {
 
   // Render login or main layout based on authentication state
   return (
-    <div 
-      className="min-h-screen" 
-      style={{
-        minHeight: '100vh',
-        background: 'linear-gradient(180deg, #0A0A0B 0%, #0F0F10 100%)',
-        color: '#E4E4E7'
-      }}
-    >
+    <div className="min-h-screen bg-dark text-dark-secondary">
       {!isLoggedIn ? <LoginView /> : <MainLayout />}
     </div>
   );
