@@ -684,32 +684,21 @@ const IndustrialCRM = () => {
   };
 
   /**
-   * Sidebar component with modern design and collapsible functionality.
+   * Sidebar with exact specification implementation.
    */
   const Sidebar = () => (
     <div
-      className={`fixed inset-y-0 left-0 z-50 w-64 bg-white/95 backdrop-blur-sm shadow-2xl border-r border-neutral-200 transform transition-all duration-300 ${
-        showMobileMenu ? 'translate-x-0' : '-translate-x-full'
-      } lg:translate-x-0 lg:static lg:inset-0`}
+      className="fixed inset-y-0 left-0 z-40 flex flex-col"
+      style={{
+        width: showMobileMenu ? 'var(--sidebar-width)' : 'var(--sidebar-collapsed)',
+        background: '#0D0D0E',
+        transition: 'width var(--transition-slow-cubic)'
+      }}
     >
-      <div className="h-full flex flex-col">
-        {/* Logo Section */}
-        <div className="p-6 border-b border-neutral-200">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary-800 to-primary-900 rounded-xl flex items-center justify-center shadow-lg">
-              <Building2 className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <h2 className="text-2xl font-bold bg-gradient-to-r from-primary-900 to-primary-700 bg-clip-text text-transparent font-display">
-                Deal Estate
-              </h2>
-              <p className="text-sm text-neutral-500 font-medium">
-                Professional Edition
-              </p>
-            </div>
-          </div>
-        </div>
-
+      {/* Top spacer for fixed navigation */}
+      <div style={{ height: 'var(--top-nav-height)' }}></div>
+      
+      <div className="flex-1 flex flex-col">
         {/* Navigation */}
         <nav className="flex-1 p-4 space-y-2">
           <SidebarItem 
@@ -743,36 +732,46 @@ const IndustrialCRM = () => {
             onClick={() => { setCurrentView('analytics'); setShowMobileMenu(false); }} 
           />
           
-          <div className="mt-8 pt-8 border-t border-neutral-200">
-            <SidebarItem 
-              icon={Settings} 
-              label="Settings" 
-              active={currentView === 'settings'} 
-              onClick={() => { setCurrentView('settings'); setShowMobileMenu(false); }} 
-            />
-            <SidebarItem 
-              icon={CreditCard} 
-              label="Billing" 
-              active={currentView === 'billing'} 
-              onClick={() => { setCurrentView('billing'); setShowMobileMenu(false); }} 
-            />
-          </div>
+          {/* Section divider */}
+          <div 
+            className="mx-4"
+            style={{
+              height: '1px',
+              background: 'rgba(255,255,255,0.06)',
+              margin: '8px 0'
+            }}
+          ></div>
+          
+          <SidebarItem 
+            icon={Settings} 
+            label="Settings" 
+            active={currentView === 'settings'} 
+            onClick={() => { setCurrentView('settings'); setShowMobileMenu(false); }} 
+          />
+          <SidebarItem 
+            icon={CreditCard} 
+            label="Billing" 
+            active={currentView === 'billing'} 
+            onClick={() => { setCurrentView('billing'); setShowMobileMenu(false); }} 
+          />
         </nav>
 
         {/* User Profile Section */}
-        <div className="p-4 border-t border-neutral-200">
-          <div className="flex items-center gap-3 mb-4 p-3 rounded-xl bg-neutral-50 hover:bg-neutral-100 transition-colors duration-200">
-            <div className="w-12 h-12 bg-gradient-to-br from-primary-800 to-primary-900 rounded-xl flex items-center justify-center text-white font-semibold text-lg shadow-md">
+        <div className="p-4 border-t border-white/6">
+          <div className="flex items-center gap-3 mb-4 p-3 rounded-xl hover:bg-white/3 transition-colors duration-200">
+            <div 
+              className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center text-white font-semibold text-lg shadow-md"
+            >
               {userProfile.name.charAt(0)}
             </div>
             <div className="flex-1">
-              <p className="font-semibold text-sm text-primary-900">{userProfile.name}</p>
-              <p className="text-xs text-neutral-500">{userProfile.company}</p>
+              <p className="font-semibold text-sm text-white">{userProfile.name}</p>
+              <p className="text-xs text-gray-400">{userProfile.company}</p>
             </div>
           </div>
           <button
             onClick={handleLogout}
-            className="w-full text-left text-sm px-4 py-3 rounded-xl hover:bg-red-50 hover:text-red-600 transition-all duration-200 text-red-500 font-medium flex items-center gap-2 ripple"
+            className="w-full text-left text-sm px-4 py-3 rounded-xl hover:bg-red-500/10 hover:text-red-400 transition-all duration-200 text-red-500 font-medium flex items-center gap-2"
           >
             <ShieldCheck className="w-4 h-4" />
             Sign Out
@@ -783,77 +782,174 @@ const IndustrialCRM = () => {
   );
 
   /**
-   * Sidebar navigation item with modern design and active indicators.
+   * Sidebar navigation item with exact specification implementation.
    */
   const SidebarItem = ({ icon: Icon, label, active, onClick }) => (
     <button
       onClick={onClick}
-      className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group relative ${
-        active
-          ? 'bg-gradient-to-r from-primary-800 to-primary-900 text-white shadow-lg'
-          : 'text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900'
-      }`}
+      className="w-full flex items-center gap-3 relative group"
+      style={{
+        height: 'var(--menu-item-height)',
+        padding: 'var(--menu-item-padding)',
+        borderRadius: 'var(--radius-large)',
+        transition: 'all var(--transition-fast)'
+      }}
     >
-      {/* Active Left Border Indicator */}
+      {/* Active Left Border Indicator - 3px solid #3B82F6 */}
       {active && (
-        <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-1 h-8 bg-accent-500 rounded-r-full"></div>
+        <div 
+          className="absolute left-0 top-1/2 transform -translate-y-1/2 rounded-r-full"
+          style={{
+            width: '3px',
+            height: 'var(--icon-size-large)',
+            background: '#3B82F6'
+          }}
+        ></div>
       )}
       
-      <Icon className={`w-5 h-5 transition-all duration-200 ${
-        active 
-          ? 'text-white' 
-          : 'text-neutral-500 group-hover:text-neutral-700 group-hover:scale-110'
-      }`} />
+      {/* Icon - 18px size */}
+      <Icon 
+        className="flex-shrink-0 transition-all duration-200" 
+        style={{
+          width: 'var(--icon-size-default)',
+          height: 'var(--icon-size-default)',
+          color: active ? '#3B82F6' : '#8B8B8F'
+        }}
+      />
       
-      <span className="font-medium">{label}</span>
+      {/* Label - 14px font-size, 500 font-weight, #E4E4E7 color */}
+      <span 
+        className="font-medium transition-colors duration-200"
+        style={{
+          fontSize: 'var(--text-md)',
+          fontWeight: 'var(--font-medium)',
+          color: active ? '#3B82F6' : '#E4E4E7'
+        }}
+      >
+        {label}
+      </span>
 
-      {/* Active indicator dot */}
+      {/* Active indicator dot - 6px red circle, position absolute right 12px */}
       {active && (
-        <div className="ml-auto w-2 h-2 bg-white rounded-full opacity-80"></div>
+        <div 
+          className="absolute rounded-full"
+          style={{
+            width: '6px',
+            height: '6px',
+            background: '#EF4444',
+            right: '12px',
+            top: '50%',
+            transform: 'translateY(-50%)'
+          }}
+        ></div>
+      )}
+
+      {/* Hover and Active Background States */}
+      <div 
+        className="absolute inset-0 rounded-lg transition-all duration-200 -z-10"
+        style={{
+          background: active 
+            ? 'linear-gradient(90deg, rgba(59,130,246,0.1) 0%, transparent 100%)'
+            : 'transparent'
+        }}
+      ></div>
+      
+      {/* Hover Background */}
+      {!active && (
+        <div 
+          className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 -z-10"
+          style={{
+            background: 'rgba(255,255,255,0.03)'
+          }}
+        ></div>
       )}
     </button>
   );
 
   /**
-   * Top bar with modern design and enhanced functionality.
+   * Top navigation bar with exact specification implementation.
    */
   const TopBar = () => (
-    <div className="bg-white/90 backdrop-blur-sm border-b border-neutral-200 px-6 py-4 flex items-center justify-between sticky top-0 z-40 shadow-sm">
-      <button
-        onClick={() => setShowMobileMenu(!showMobileMenu)}
-        className="lg:hidden p-2 rounded-xl hover:bg-neutral-100 transition-colors duration-200 ripple"
+    <div 
+      className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between"
+      style={{
+        height: 'var(--top-nav-height)',
+        background: 'linear-gradient(180deg, #0A0A0B 0%, #0F0F10 100%)',
+        borderBottom: '1px solid rgba(255,255,255,0.05)'
+      }}
+    >
+      {/* Logo Area - 240px width with right border */}
+      <div 
+        className="flex items-center justify-center"
+        style={{
+          width: 'var(--logo-width)',
+          borderRight: '1px solid rgba(255,255,255,0.08)'
+        }}
       >
-        <Menu className="w-6 h-6 text-neutral-700" />
-      </button>
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
+            <Building2 className="w-6 h-6 text-white" />
+          </div>
+          <div>
+            <h2 className="text-2xl font-bold text-white font-display">Deal Estate</h2>
+            <p className="text-sm text-gray-400 font-medium">Professional Edition</p>
+          </div>
+        </div>
+      </div>
 
-      <div className="flex-1 max-w-xl mx-4">
-        <div className="relative">
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-neutral-400" />
+      {/* Search Bar - 480px width, 36px height */}
+      <div className="flex-1 flex justify-center">
+        <div 
+          className="relative"
+          style={{ width: 'var(--search-width)' }}
+        >
+          <Search 
+            className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" 
+            style={{ width: 'var(--icon-size-small)', height: 'var(--icon-size-small)' }}
+          />
           <input
             type="text"
             placeholder="Search properties, clients..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-12 pr-4 py-3 rounded-xl border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500 transition-all duration-200 bg-white/80 backdrop-blur-sm shadow-sm hover:shadow-md"
+            className="form-input focus-ring"
+            style={{
+              height: 'var(--search-height)',
+              background: '#141416',
+              border: '1px solid rgba(255,255,255,0.1)',
+              paddingLeft: '48px',
+              paddingRight: '16px'
+            }}
           />
         </div>
       </div>
 
-      <div className="flex items-center gap-4">
+      {/* Right Side Controls */}
+      <div className="flex items-center gap-4 pr-6">
         {/* Notifications */}
-        <button className="relative p-3 rounded-xl hover:bg-neutral-100 transition-all duration-200 group ripple">
-          <Bell className="w-5 h-5 text-neutral-600 group-hover:text-neutral-800 group-hover:scale-110 transition-all duration-200" />
+        <button className="relative p-3 rounded-xl hover:bg-white/5 transition-all duration-200 group">
+          <Bell 
+            className="w-5 h-5 text-gray-400 group-hover:text-white group-hover:scale-110 transition-all duration-200" 
+          />
           {notifications.length > 0 && (
-            <span className="absolute top-2 right-2 w-3 h-3 bg-accent-500 rounded-full animate-pulse"></span>
+            <span 
+              className="absolute top-2 right-2 w-3 h-3 bg-blue-500 rounded-full animate-pulse"
+            ></span>
           )}
         </button>
 
-        {/* User Profile Quick Access */}
-        <div className="hidden md:flex items-center gap-3 p-2 rounded-xl hover:bg-neutral-50 transition-colors duration-200 cursor-pointer ripple">
-          <div className="w-8 h-8 bg-gradient-to-br from-primary-800 to-primary-900 rounded-lg flex items-center justify-center text-white text-sm font-semibold shadow-md">
+        {/* User Avatar - 32px with 2px white border, online indicator */}
+        <div className="relative">
+          <div 
+            className="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center text-white text-sm font-semibold shadow-md"
+            style={{ border: '2px solid white' }}
+          >
             {userProfile.name.charAt(0)}
           </div>
-          <span className="text-sm font-medium text-primary-700">{userProfile.name}</span>
+          {/* Online indicator - 8px green dot bottom-right */}
+          <div 
+            className="absolute -bottom-1 -right-1 w-2 h-2 bg-green-500 rounded-full border-2 border-black"
+          ></div>
         </div>
       </div>
     </div>
@@ -934,7 +1030,7 @@ const IndustrialCRM = () => {
   );
 
   /**
-   * Dashboard view with modern glass morphism design and improved layout.
+   * Dashboard view with exact KPI cards specification implementation.
    */
   const DashboardView = () => {
     const totalProperties = properties.length;
@@ -952,122 +1048,179 @@ const IndustrialCRM = () => {
     };
 
     return (
-      <div className="p-6 bg-neutral-50 min-h-screen">
+      <div className="p-6 min-h-screen" style={{ background: '#0A0A0B' }}>
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-primary-900 mb-2 font-display">Dashboard</h1>
-            <p className="text-lg text-neutral-600">Welcome back! Here's what's happening with your properties.</p>
+            <h1 className="text-3xl font-bold text-white mb-2 font-display">Dashboard</h1>
+            <p className="text-lg text-gray-400">Welcome back! Here's what's happening with your properties.</p>
           </div>
 
           {/* Key Metrics Grid - 12 Column System */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <div className="metric-card group">
-              <div className="flex items-center justify-between mb-4">
-                <div className="w-14 h-14 bg-gradient-to-br from-primary-50 to-primary-100 rounded-2xl flex items-center justify-center group-hover:from-primary-100 group-hover:to-primary-200 transition-all duration-300">
-                  <Building2 className="w-7 h-7 text-primary-600" />
-                </div>
-                <div className="text-right">
-                  <div className="flex items-center gap-1 text-sm font-semibold px-3 py-1 rounded-full bg-success-50 text-success-700 border border-success-200">
-                    <div className="w-2 h-2 bg-success-500 rounded-full"></div>
-                    Active
-                  </div>
-                  {/* Mini Sparkline */}
-                  <div className="flex items-end gap-0.5 mt-1">
-                    {trends.properties.map((value, index) => (
-                      <div
-                        key={index}
-                        className="w-1 bg-accent-300 rounded-full"
-                        style={{ height: `${(value / Math.max(...trends.properties)) * 20}px` }}
-                      ></div>
-                    ))}
-                  </div>
-                </div>
+            {/* Properties KPI Card */}
+            <div className="kpi-card group">
+              {/* Status indicator - 8px circle with 12px pulsing ring */}
+              <div className="status-indicator green"></div>
+              
+              {/* Main metric - 32px font-size, 700 font-weight */}
+              <div className="main-metric">{totalProperties}</div>
+              
+              {/* Label - 12px font-size, 500 font-weight, uppercase */}
+              <div className="label">{activeProperties} Active Properties</div>
+              
+              {/* Trend indicator - position absolute top-right */}
+              <div className="trend-indicator positive">
+                <span className="arrow">▲</span>
+                +12%
               </div>
-              <h3 className="metric-value mb-2">{totalProperties}</h3>
-              <p className="metric-label">{activeProperties} Active Properties</p>
-              <div className="mt-4 w-12 h-1 bg-gradient-to-r from-primary-400 to-primary-500 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
+              
+              {/* Sparkline - bottom 32px height */}
+              <div className="sparkline">
+                <svg width="100%" height="100%" viewBox="0 0 100 32">
+                  <defs>
+                    <linearGradient id="sparklineGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stopColor="#3B82F6" />
+                      <stop offset="100%" stopColor="#60A5FA" />
+                    </linearGradient>
+                    <linearGradient id="sparklineFill" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stopColor="rgba(59,130,246,0.1)" />
+                      <stop offset="100%" stopColor="transparent" />
+                    </linearGradient>
+                  </defs>
+                  <path
+                    d={`M 0 ${32 - (trends.properties[0] / 7) * 32} ${trends.properties.map((value, index) => 
+                      `L ${(index + 1) * (100 / (trends.properties.length - 1))} ${32 - (value / 7) * 32}`
+                    ).join(' ')}`}
+                    stroke="url(#sparklineGradient)"
+                    strokeWidth="2"
+                    fill="none"
+                    vectorEffect="non-scaling-stroke"
+                  />
+                  <path
+                    d={`M 0 ${32 - (trends.properties[0] / 7) * 32} ${trends.properties.map((value, index) => 
+                      `L ${(index + 1) * (100 / (trends.properties.length - 1))} ${32 - (value / 7) * 32}`
+                    ).join(' ')} L 100 32 L 0 32 Z`}
+                    fill="url(#sparklineFill)"
+                  />
+                </svg>
+              </div>
             </div>
 
-            <div className="metric-card group">
-              <div className="flex items-center justify-between mb-4">
-                <div className="w-14 h-14 bg-gradient-to-br from-accent-50 to-accent-100 rounded-2xl flex items-center justify-center group-hover:from-accent-100 group-hover:to-accent-200 transition-all duration-300">
-                  <Users className="w-7 h-7 text-accent-600" />
-                </div>
-                <div className="text-right">
-                  <div className="flex items-center gap-1 text-sm font-semibold px-3 py-1 rounded-full bg-accent-50 text-accent-700 border border-accent-200">
-                    <div className="w-2 h-2 bg-accent-500 rounded-full"></div>
-                    Total
-                  </div>
-                  {/* Mini Sparkline */}
-                  <div className="flex items-end gap-0.5 mt-1">
-                    {trends.clients.map((value, index) => (
-                      <div
-                        key={index}
-                        className="w-1 bg-accent-300 rounded-full"
-                        style={{ height: `${(value / Math.max(...trends.clients)) * 20}px` }}
-                      ></div>
-                    ))}
-                  </div>
-                </div>
+            {/* Clients KPI Card */}
+            <div className="kpi-card group">
+              <div className="status-indicator amber"></div>
+              <div className="main-metric">{totalClients}</div>
+              <div className="label">{activeClients} Active Clients</div>
+              <div className="trend-indicator positive">
+                <span className="arrow">▲</span>
+                +8%
               </div>
-              <h3 className="metric-value mb-2">{totalClients}</h3>
-              <p className="metric-label">{activeClients} Active Clients</p>
-              <div className="mt-4 w-12 h-1 bg-gradient-to-r from-accent-400 to-accent-500 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
+              <div className="sparkline">
+                <svg width="100%" height="100%" viewBox="0 0 100 32">
+                  <defs>
+                    <linearGradient id="sparklineGradient2" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stopColor="#3B82F6" />
+                      <stop offset="100%" stopColor="#60A5FA" />
+                    </linearGradient>
+                    <linearGradient id="sparklineFill2" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stopColor="rgba(59,130,246,0.1)" />
+                      <stop offset="100%" stopColor="transparent" />
+                    </linearGradient>
+                  </defs>
+                  <path
+                    d={`M 0 ${32 - (trends.clients[0] / 6) * 32} ${trends.clients.map((value, index) => 
+                      `L ${(index + 1) * (100 / (trends.clients.length - 1))} ${32 - (value / 6) * 32}`
+                    ).join(' ')}`}
+                    stroke="url(#sparklineGradient2)"
+                    strokeWidth="2"
+                    fill="none"
+                    vectorEffect="non-scaling-stroke"
+                  />
+                  <path
+                    d={`M 0 ${32 - (trends.clients[0] / 6) * 32} ${trends.clients.map((value, index) => 
+                      `L ${(index + 1) * (100 / (trends.clients.length - 1))} ${32 - (value / 6) * 32}`
+                    ).join(' ')} L 100 32 L 0 32 Z`}
+                    fill="url(#sparklineFill2)"
+                  />
+                </svg>
+              </div>
             </div>
 
-            <div className="metric-card group">
-              <div className="flex items-center justify-between mb-4">
-                <div className="w-14 h-14 bg-gradient-to-br from-success-50 to-success-100 rounded-2xl flex items-center justify-center group-hover:from-success-100 group-hover:to-success-200 transition-all duration-300">
-                  <TrendingUp className="w-7 h-7 text-success-600" />
-                </div>
-                <div className="text-right">
-                  <div className="flex items-center gap-1 text-sm font-semibold px-3 py-1 rounded-full bg-success-50 text-success-700 border border-success-200">
-                    <div className="w-2 h-2 bg-success-500 rounded-full"></div>
-                    {conversionRate}%
-                  </div>
-                  {/* Mini Sparkline */}
-                  <div className="flex items-end gap-0.5 mt-1">
-                    {trends.inquiries.map((value, index) => (
-                      <div
-                        key={index}
-                        className="w-1 bg-success-300 rounded-full"
-                        style={{ height: `${(value / Math.max(...trends.inquiries)) * 20}px` }}
-                      ></div>
-                    ))}
-                  </div>
-                </div>
+            {/* Conversion Rate KPI Card */}
+            <div className="kpi-card group">
+              <div className="status-indicator green"></div>
+              <div className="main-metric">{conversionRate}%</div>
+              <div className="label">Conversion Rate</div>
+              <div className="trend-indicator positive">
+                <span className="arrow">▲</span>
+                +5%
               </div>
-              <h3 className="metric-value mb-2">{conversionRate}%</h3>
-              <p className="metric-label">Conversion Rate</p>
-              <div className="mt-4 w-12 h-1 bg-gradient-to-r from-success-400 to-success-500 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
+              <div className="sparkline">
+                <svg width="100%" height="100%" viewBox="0 0 100 32">
+                  <defs>
+                    <linearGradient id="sparklineGradient3" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stopColor="#3B82F6" />
+                      <stop offset="100%" stopColor="#60A5FA" />
+                    </linearGradient>
+                    <linearGradient id="sparklineFill3" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stopColor="rgba(59,130,246,0.1)" />
+                      <stop offset="100%" stopColor="transparent" />
+                    </linearGradient>
+                  </defs>
+                  <path
+                    d={`M 0 ${32 - (trends.inquiries[0] / 18) * 32} ${trends.inquiries.map((value, index) => 
+                      `L ${(index + 1) * (100 / (trends.inquiries.length - 1))} ${32 - (value / 18) * 32}`
+                    ).join(' ')}`}
+                    stroke="url(#sparklineGradient3)"
+                    strokeWidth="2"
+                    fill="none"
+                    vectorEffect="non-scaling-stroke"
+                  />
+                  <path
+                    d={`M 0 ${32 - (trends.inquiries[0] / 18) * 32} ${trends.inquiries.map((value, index) => 
+                      `L ${(index + 1) * (100 / (trends.inquiries.length - 1))} ${32 - (value / 18) * 32}`
+                    ).join(' ')} L 100 32 L 0 32 Z`}
+                    fill="url(#sparklineFill3)"
+                  />
+                </svg>
+              </div>
             </div>
 
-            <div className="metric-card group">
-              <div className="flex items-center justify-between mb-4">
-                <div className="w-14 h-14 bg-gradient-to-br from-warning-50 to-warning-100 rounded-2xl flex items-center justify-center group-hover:from-warning-100 group-hover:to-warning-200 transition-all duration-300">
-                  <Bell className="w-7 h-7 text-warning-600" />
-                </div>
-                <div className="text-right">
-                  <div className="flex items-center gap-1 text-sm font-semibold px-3 py-1 rounded-full bg-warning-50 text-warning-700 border border-warning-200">
-                    <div className="w-2 h-2 bg-warning-500 rounded-full"></div>
-                    Recent
-                  </div>
-                  {/* Mini Sparkline */}
-                  <div className="flex items-end gap-0.5 mt-1">
-                    {[3, 5, 8, 12, 15, 18].map((value, index) => (
-                      <div
-                        key={index}
-                        className="w-1 bg-warning-300 rounded-full"
-                        style={{ height: `${(value / 18) * 20}px` }}
-                      ></div>
-                    ))}
-                  </div>
-                </div>
+            {/* Notifications KPI Card */}
+            <div className="kpi-card group">
+              <div className="status-indicator amber"></div>
+              <div className="main-metric">{notifications.length}</div>
+              <div className="label">Notifications Sent</div>
+              <div className="trend-indicator positive">
+                <span className="arrow">▲</span>
+                +23%
               </div>
-              <h3 className="metric-value mb-2">{notifications.length}</h3>
-              <p className="metric-label">Notifications Sent</p>
-              <div className="mt-4 w-12 h-1 bg-gradient-to-r from-warning-400 to-warning-500 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
+              <div className="sparkline">
+                <svg width="100%" height="100%" viewBox="0 0 100 32">
+                  <defs>
+                    <linearGradient id="sparklineGradient4" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stopColor="#3B82F6" />
+                      <stop offset="100%" stopColor="#60A5FA" />
+                    </linearGradient>
+                    <linearGradient id="sparklineFill4" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stopColor="rgba(59,130,246,0.1)" />
+                      <stop offset="100%" stopColor="transparent" />
+                    </linearGradient>
+                  </defs>
+                  <path
+                    d={`M 0 ${32 - (3 / 18) * 32} L 20 ${32 - (5 / 18) * 32} L 40 ${32 - (8 / 18) * 32} L 60 ${32 - (12 / 18) * 32} L 80 ${32 - (15 / 18) * 32} L 100 ${32 - (18 / 18) * 32}`}
+                    stroke="url(#sparklineGradient4)"
+                    strokeWidth="2"
+                    fill="none"
+                    vectorEffect="non-scaling-stroke"
+                  />
+                  <path
+                    d={`M 0 ${32 - (3 / 18) * 32} L 20 ${32 - (5 / 18) * 32} L 40 ${32 - (8 / 18) * 32} L 60 ${32 - (12 / 18) * 32} L 80 ${32 - (15 / 18) * 32} L 100 ${32 - (18 / 18) * 32} L 100 32 L 0 32 Z`}
+                    fill="url(#sparklineFill4)"
+                  />
+                </svg>
+              </div>
             </div>
           </div>
 
@@ -1075,30 +1228,30 @@ const IndustrialCRM = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             {/* Recent Properties - 8 columns */}
             <div className="lg:col-span-8">
-              <div className="card p-6">
+              <div className="bg-black/20 backdrop-blur-sm rounded-xl p-6 border border-white/6">
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-xl font-semibold text-primary-900 font-display">Recent Properties</h2>
+                  <h2 className="text-xl font-semibold text-white font-display">Recent Properties</h2>
                   <button 
                     onClick={() => setCurrentView('properties')}
-                    className="btn-accent text-sm py-2 px-4 ripple"
+                    className="btn btn-primary text-sm py-2 px-4"
                   >
                     View All
                   </button>
                 </div>
                 <div className="space-y-4">
                   {properties.slice(0, 5).map((property) => (
-                    <div key={property.id} className="flex items-center gap-4 p-4 rounded-lg hover:bg-neutral-50 transition-colors duration-200">
-                      <div className="w-16 h-16 bg-gradient-to-br from-primary-100 to-primary-200 rounded-lg flex items-center justify-center">
-                        <Building2 className="w-8 h-8 text-primary-600" />
+                    <div key={property.id} className="flex items-center gap-4 p-4 rounded-lg hover:bg-white/5 transition-colors duration-200">
+                      <div className="w-16 h-16 bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-lg flex items-center justify-center">
+                        <Building2 className="w-8 h-8 text-blue-400" />
                       </div>
                       <div className="flex-1">
-                        <h3 className="font-semibold text-primary-900">{property.title}</h3>
-                        <p className="text-sm text-neutral-600">{property.city}, {property.state}</p>
-                        <div className="flex items-center gap-4 mt-1 text-xs text-neutral-500">
+                        <h3 className="font-semibold text-white">{property.title}</h3>
+                        <p className="text-sm text-gray-400">{property.city}, {property.state}</p>
+                        <div className="flex items-center gap-4 mt-1 text-xs text-gray-500">
                           <span>${property.price?.toLocaleString()}</span>
                           <span>{property.sqft?.toLocaleString()} sq ft</span>
                           <span className={`px-2 py-1 rounded-full ${
-                            property.status === 'active' ? 'status-active' : 'status-inactive'
+                            property.status === 'active' ? 'bg-green-500/20 text-green-400' : 'bg-gray-500/20 text-gray-400'
                           }`}>
                             {property.status}
                           </span>
@@ -1106,15 +1259,15 @@ const IndustrialCRM = () => {
                       </div>
                       <button 
                         onClick={() => { setSelectedProperty(property); setCurrentView('property-detail'); }}
-                        className="btn-secondary text-sm py-2 px-3 ripple"
+                        className="btn btn-secondary text-sm py-2 px-3"
                       >
                         View
                       </button>
                     </div>
                   ))}
                   {properties.length === 0 && (
-                    <div className="text-center py-8 text-neutral-500">
-                      <Building2 className="w-12 h-12 mx-auto mb-3 text-neutral-300" />
+                    <div className="text-center py-8 text-gray-500">
+                      <Building2 className="w-12 h-12 mx-auto mb-3 text-gray-600" />
                       <p>No properties added yet</p>
                     </div>
                   )}
@@ -1125,26 +1278,26 @@ const IndustrialCRM = () => {
             {/* Quick Actions & Stats - 4 columns */}
             <div className="lg:col-span-4 space-y-6">
               {/* Quick Actions */}
-              <div className="card p-6">
-                <h3 className="text-lg font-semibold text-primary-900 mb-4 font-display">Quick Actions</h3>
+              <div className="bg-black/20 backdrop-blur-sm rounded-xl p-6 border border-white/6">
+                <h3 className="text-lg font-semibold text-white mb-4 font-display">Quick Actions</h3>
                 <div className="space-y-3">
                   <button 
                     onClick={() => setCurrentView('add-property')}
-                    className="w-full btn-primary text-left py-3 px-4 ripple"
+                    className="w-full btn btn-primary text-left py-3 px-4"
                   >
                     <Plus className="w-4 h-4 inline mr-2" />
                     Add Property
                   </button>
                   <button 
                     onClick={() => setCurrentView('add-manual-client')}
-                    className="w-full btn-accent text-left py-3 px-4 ripple"
+                    className="w-full btn btn-secondary text-left py-3 px-4"
                   >
                     <UserPlus className="w-4 h-4 inline mr-2" />
                     Add Client
                   </button>
                   <button 
                     onClick={() => setCurrentView('analytics')}
-                    className="w-full btn-secondary text-left py-3 px-4 ripple"
+                    className="w-full btn btn-ghost text-left py-3 px-4"
                   >
                     <TrendingUp className="w-4 h-4 inline mr-2" />
                     View Analytics
@@ -1153,26 +1306,26 @@ const IndustrialCRM = () => {
               </div>
 
               {/* Recent Activity */}
-              <div className="card p-6">
-                <h3 className="text-lg font-semibold text-primary-900 mb-4 font-display">Recent Activity</h3>
+              <div className="bg-black/20 backdrop-blur-sm rounded-xl p-6 border border-white/6">
+                <h3 className="text-lg font-semibold text-white mb-4 font-display">Recent Activity</h3>
                 <div className="space-y-3">
                   {notifications.slice(0, 3).map((notification) => (
-                    <div key={notification.id} className="flex items-start gap-3 p-3 rounded-lg bg-neutral-50">
-                      <div className="w-8 h-8 bg-accent-100 rounded-full flex items-center justify-center">
-                        <Bell className="w-4 h-4 text-accent-600" />
+                    <div key={notification.id} className="flex items-start gap-3 p-3 rounded-lg bg-white/5">
+                      <div className="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center">
+                        <Bell className="w-4 h-4 text-blue-400" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-primary-900 truncate">
+                        <p className="text-sm font-medium text-white truncate">
                           Notification sent to {notification.clientName}
                         </p>
-                        <p className="text-xs text-neutral-500">
+                        <p className="text-xs text-gray-400">
                           {new Date(notification.timestamp).toLocaleDateString()}
                         </p>
                       </div>
                     </div>
                   ))}
                   {notifications.length === 0 && (
-                    <div className="text-center py-4 text-neutral-500">
+                    <div className="text-center py-4 text-gray-500">
                       <p className="text-sm">No recent activity</p>
                     </div>
                   )}
@@ -2398,11 +2551,14 @@ const IndustrialCRM = () => {
    * Main layout including sidebar, topbar and content area.
    */
   const MainLayout = () => (
-    <div className="flex h-screen bg-neutral-50">
+    <div className="flex min-h-screen" style={{ background: '#0A0A0B' }}>
       <Sidebar />
       <div className="flex-1 flex flex-col">
         <TopBar />
-        <div className="flex-1 overflow-y-auto">
+        <div 
+          className="flex-1 overflow-y-auto"
+          style={{ marginTop: 'var(--top-nav-height)' }}
+        >
           {currentView === 'dashboard' && <DashboardView />}
           {currentView === 'properties' && <PropertiesView />}
           {currentView === 'property-detail' && <PropertyDetailView />}
@@ -2420,7 +2576,7 @@ const IndustrialCRM = () => {
   );
 
   // Render login or main layout based on authentication state
-  return <div className="min-h-screen bg-neutral-50">{!isLoggedIn ? <LoginView /> : <MainLayout />}</div>;
+  return <div className="min-h-screen" style={{ background: '#0A0A0B' }}>{!isLoggedIn ? <LoginView /> : <MainLayout />}</div>;
 };
 
 export default IndustrialCRM;
