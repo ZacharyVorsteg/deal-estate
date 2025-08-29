@@ -1048,7 +1048,13 @@ const IndustrialCRM = () => {
     };
 
     return (
-      <div className="p-6 min-h-screen" style={{ background: '#0A0A0B' }}>
+      <div 
+        className="p-6 min-h-screen" 
+        style={{
+          background: 'linear-gradient(180deg, #0A0A0B 0%, #0F0F10 100%)',
+          color: '#E4E4E7'
+        }}
+      >
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="mb-8">
@@ -1058,170 +1064,93 @@ const IndustrialCRM = () => {
 
           {/* Key Metrics Grid - 12 Column System */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            {/* Properties KPI Card */}
-            <div className="kpi-card group">
-              {/* Status indicator - 8px circle with 12px pulsing ring */}
-              <div className="status-indicator green"></div>
-              
-              {/* Main metric - 32px font-size, 700 font-weight */}
-              <div className="main-metric">{totalProperties}</div>
-              
-              {/* Label - 12px font-size, 500 font-weight, uppercase */}
-              <div className="label">{activeProperties} Active Properties</div>
-              
-              {/* Trend indicator - position absolute top-right */}
-              <div className="trend-indicator positive">
-                <span className="arrow">▲</span>
-                +12%
+            {[
+              { 
+                label: 'ACTIVE PROPERTIES', 
+                value: activeProperties, 
+                change: '+12%',
+                color: 'from-green-500 to-emerald-600',
+                icon: '📊',
+                trend: 'up'
+              },
+              { 
+                label: 'ACTIVE CLIENTS', 
+                value: activeClients,
+                change: '+8%', 
+                color: 'from-blue-500 to-indigo-600',
+                icon: '👥',
+                trend: 'up'
+              },
+              { 
+                label: 'CONVERSION RATE', 
+                value: `${conversionRate}%`,
+                change: '+5%',
+                color: 'from-purple-500 to-pink-600',
+                icon: '📈',
+                trend: 'neutral'
+              },
+              { 
+                label: 'NOTIFICATIONS SENT', 
+                value: notifications.length,
+                change: '+23%',
+                color: 'from-amber-500 to-orange-600',
+                icon: '🔔',
+                trend: 'up'
+              }
+            ].map((metric, index) => (
+              <div key={index} className="group relative">
+                {/* Gradient background effect */}
+                <div className={`absolute inset-0 bg-gradient-to-br ${metric.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-xl`} />
+                
+                {/* Card */}
+                <div className="relative bg-gray-900/50 backdrop-blur-sm border border-gray-800 hover:border-gray-700 rounded-xl p-6 transition-all duration-200 hover:transform hover:-translate-y-1 hover:shadow-2xl">
+                  
+                  {/* Status indicator */}
+                  <div className="absolute top-3 right-3">
+                    <div className={`w-2 h-2 rounded-full ${metric.trend === 'up' ? 'bg-green-500' : metric.trend === 'down' ? 'bg-red-500' : 'bg-yellow-500'} animate-pulse`}>
+                      <div className={`absolute inset-0 rounded-full ${metric.trend === 'up' ? 'bg-green-500' : metric.trend === 'down' ? 'bg-red-500' : 'bg-yellow-500'} animate-ping`} />
+                    </div>
+                  </div>
+                  
+                  {/* Icon */}
+                  <div className="text-2xl mb-3">{metric.icon}</div>
+                  
+                  {/* Value */}
+                  <div className="text-3xl font-bold text-white mb-1">
+                    {metric.value}
+                  </div>
+                  
+                  {/* Label */}
+                  <div className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">
+                    {metric.label}
+                  </div>
+                  
+                  {/* Change indicator */}
+                  <div className={`inline-flex items-center text-xs font-medium ${metric.trend === 'up' ? 'text-green-400' : metric.trend === 'down' ? 'text-red-400' : 'text-yellow-400'}`}>
+                    {metric.trend === 'up' ? '↑' : metric.trend === 'down' ? '↓' : '→'} {metric.change}
+                  </div>
+                  
+                  {/* Mini chart */}
+                  <div className="mt-3 h-8">
+                    <svg className="w-full h-full" viewBox="0 0 100 32">
+                      <defs>
+                        <linearGradient id={`gradient-${index}`} x1="0%" y1="0%" x2="0%" y2="100%">
+                          <stop offset="0%" className={metric.trend === 'up' ? 'text-green-400' : 'text-gray-600'} stopColor="currentColor" stopOpacity="0.3" />
+                          <stop offset="100%" className={metric.trend === 'up' ? 'text-green-400' : 'text-gray-600'} stopColor="currentColor" stopOpacity="0" />
+                        </linearGradient>
+                      </defs>
+                      <polyline
+                        fill={`url(#gradient-${index})`}
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        className={metric.trend === 'up' ? 'text-green-400' : 'text-gray-600'}
+                        points="0,24 20,20 40,22 60,12 80,16 100,8 100,32 0,32"
+                      />
+                    </svg>
+                  </div>
+                </div>
               </div>
-              
-              {/* Sparkline - bottom 32px height */}
-              <div className="sparkline">
-                <svg width="100%" height="100%" viewBox="0 0 100 32">
-                  <defs>
-                    <linearGradient id="sparklineGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                      <stop offset="0%" stopColor="#3B82F6" />
-                      <stop offset="100%" stopColor="#60A5FA" />
-                    </linearGradient>
-                    <linearGradient id="sparklineFill" x1="0%" y1="0%" x2="0%" y2="100%">
-                      <stop offset="0%" stopColor="rgba(59,130,246,0.1)" />
-                      <stop offset="100%" stopColor="transparent" />
-                    </linearGradient>
-                  </defs>
-                  <path
-                    d={`M 0 ${32 - (trends.properties[0] / 7) * 32} ${trends.properties.map((value, index) => 
-                      `L ${(index + 1) * (100 / (trends.properties.length - 1))} ${32 - (value / 7) * 32}`
-                    ).join(' ')}`}
-                    stroke="url(#sparklineGradient)"
-                    strokeWidth="2"
-                    fill="none"
-                    vectorEffect="non-scaling-stroke"
-                  />
-                  <path
-                    d={`M 0 ${32 - (trends.properties[0] / 7) * 32} ${trends.properties.map((value, index) => 
-                      `L ${(index + 1) * (100 / (trends.properties.length - 1))} ${32 - (value / 7) * 32}`
-                    ).join(' ')} L 100 32 L 0 32 Z`}
-                    fill="url(#sparklineFill)"
-                  />
-                </svg>
-              </div>
-            </div>
-
-            {/* Clients KPI Card */}
-            <div className="kpi-card group">
-              <div className="status-indicator amber"></div>
-              <div className="main-metric">{totalClients}</div>
-              <div className="label">{activeClients} Active Clients</div>
-              <div className="trend-indicator positive">
-                <span className="arrow">▲</span>
-                +8%
-              </div>
-              <div className="sparkline">
-                <svg width="100%" height="100%" viewBox="0 0 100 32">
-                  <defs>
-                    <linearGradient id="sparklineGradient2" x1="0%" y1="0%" x2="0%" y2="100%">
-                      <stop offset="0%" stopColor="#3B82F6" />
-                      <stop offset="100%" stopColor="#60A5FA" />
-                    </linearGradient>
-                    <linearGradient id="sparklineFill2" x1="0%" y1="0%" x2="0%" y2="100%">
-                      <stop offset="0%" stopColor="rgba(59,130,246,0.1)" />
-                      <stop offset="100%" stopColor="transparent" />
-                    </linearGradient>
-                  </defs>
-                  <path
-                    d={`M 0 ${32 - (trends.clients[0] / 6) * 32} ${trends.clients.map((value, index) => 
-                      `L ${(index + 1) * (100 / (trends.clients.length - 1))} ${32 - (value / 6) * 32}`
-                    ).join(' ')}`}
-                    stroke="url(#sparklineGradient2)"
-                    strokeWidth="2"
-                    fill="none"
-                    vectorEffect="non-scaling-stroke"
-                  />
-                  <path
-                    d={`M 0 ${32 - (trends.clients[0] / 6) * 32} ${trends.clients.map((value, index) => 
-                      `L ${(index + 1) * (100 / (trends.clients.length - 1))} ${32 - (value / 6) * 32}`
-                    ).join(' ')} L 100 32 L 0 32 Z`}
-                    fill="url(#sparklineFill2)"
-                  />
-                </svg>
-              </div>
-            </div>
-
-            {/* Conversion Rate KPI Card */}
-            <div className="kpi-card group">
-              <div className="status-indicator green"></div>
-              <div className="main-metric">{conversionRate}%</div>
-              <div className="label">Conversion Rate</div>
-              <div className="trend-indicator positive">
-                <span className="arrow">▲</span>
-                +5%
-              </div>
-              <div className="sparkline">
-                <svg width="100%" height="100%" viewBox="0 0 100 32">
-                  <defs>
-                    <linearGradient id="sparklineGradient3" x1="0%" y1="0%" x2="0%" y2="100%">
-                      <stop offset="0%" stopColor="#3B82F6" />
-                      <stop offset="100%" stopColor="#60A5FA" />
-                    </linearGradient>
-                    <linearGradient id="sparklineFill3" x1="0%" y1="0%" x2="0%" y2="100%">
-                      <stop offset="0%" stopColor="rgba(59,130,246,0.1)" />
-                      <stop offset="100%" stopColor="transparent" />
-                    </linearGradient>
-                  </defs>
-                  <path
-                    d={`M 0 ${32 - (trends.inquiries[0] / 18) * 32} ${trends.inquiries.map((value, index) => 
-                      `L ${(index + 1) * (100 / (trends.inquiries.length - 1))} ${32 - (value / 18) * 32}`
-                    ).join(' ')}`}
-                    stroke="url(#sparklineGradient3)"
-                    strokeWidth="2"
-                    fill="none"
-                    vectorEffect="non-scaling-stroke"
-                  />
-                  <path
-                    d={`M 0 ${32 - (trends.inquiries[0] / 18) * 32} ${trends.inquiries.map((value, index) => 
-                      `L ${(index + 1) * (100 / (trends.inquiries.length - 1))} ${32 - (value / 18) * 32}`
-                    ).join(' ')} L 100 32 L 0 32 Z`}
-                    fill="url(#sparklineFill3)"
-                  />
-                </svg>
-              </div>
-            </div>
-
-            {/* Notifications KPI Card */}
-            <div className="kpi-card group">
-              <div className="status-indicator amber"></div>
-              <div className="main-metric">{notifications.length}</div>
-              <div className="label">Notifications Sent</div>
-              <div className="trend-indicator positive">
-                <span className="arrow">▲</span>
-                +23%
-              </div>
-              <div className="sparkline">
-                <svg width="100%" height="100%" viewBox="0 0 100 32">
-                  <defs>
-                    <linearGradient id="sparklineGradient4" x1="0%" y1="0%" x2="0%" y2="100%">
-                      <stop offset="0%" stopColor="#3B82F6" />
-                      <stop offset="100%" stopColor="#60A5FA" />
-                    </linearGradient>
-                    <linearGradient id="sparklineFill4" x1="0%" y1="0%" x2="0%" y2="100%">
-                      <stop offset="0%" stopColor="rgba(59,130,246,0.1)" />
-                      <stop offset="100%" stopColor="transparent" />
-                    </linearGradient>
-                  </defs>
-                  <path
-                    d={`M 0 ${32 - (3 / 18) * 32} L 20 ${32 - (5 / 18) * 32} L 40 ${32 - (8 / 18) * 32} L 60 ${32 - (12 / 18) * 32} L 80 ${32 - (15 / 18) * 32} L 100 ${32 - (18 / 18) * 32}`}
-                    stroke="url(#sparklineGradient4)"
-                    strokeWidth="2"
-                    fill="none"
-                    vectorEffect="non-scaling-stroke"
-                  />
-                  <path
-                    d={`M 0 ${32 - (3 / 18) * 32} L 20 ${32 - (5 / 18) * 32} L 40 ${32 - (8 / 18) * 32} L 60 ${32 - (12 / 18) * 32} L 80 ${32 - (15 / 18) * 32} L 100 ${32 - (18 / 18) * 32} L 100 32 L 0 32 Z`}
-                    fill="url(#sparklineFill4)"
-                  />
-                </svg>
-              </div>
-            </div>
+            ))}
           </div>
 
           {/* Content Grid - 12 Column System */}
@@ -1461,104 +1390,94 @@ const IndustrialCRM = () => {
    * Small card showing summary information for a property in a list.
    */
   const PropertyCard = ({ property, onClick }) => (
-    <div className="card-hover overflow-hidden cursor-pointer group">
-      {/* Image Section with Aspect Ratio */}
-      <div className="relative aspect-video overflow-hidden">
+    <div className="group relative bg-gray-900/50 backdrop-blur-sm border border-gray-800 hover:border-blue-500/50 rounded-xl overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/10 cursor-pointer">
+      {/* Premium overlay gradient */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10" />
+      
+      {/* Image with parallax effect */}
+      <div className="relative h-48 overflow-hidden">
         {property.image ? (
-          <>
-            <img 
-              src={property.image} 
-              alt={property.title} 
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-            />
-            {/* Overlay Gradient */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          </>
+          <img 
+            src={property.image} 
+            alt={property.title}
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          />
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-neutral-100 to-neutral-200 group-hover:from-neutral-200 group-hover:to-neutral-300 transition-all duration-300">
-            <Building2 className="w-16 h-16 text-neutral-400" />
+          <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
+            <Building2 className="w-12 h-12 text-gray-700" />
           </div>
         )}
         
-        {/* Status Badge */}
-        <div className="absolute top-3 right-3">
-          <span className={`px-3 py-1 text-xs font-semibold rounded-full shadow-lg ${
-            property.status === 'active'
-              ? 'bg-success-500 text-white'
+        {/* Status badge with glass effect */}
+        <div className="absolute top-3 left-3 z-20">
+          <span className={`
+            px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-md
+            ${property.status === 'active' 
+              ? 'bg-green-500/20 text-green-400 border border-green-500/30' 
               : property.status === 'leased'
-              ? 'bg-accent-500 text-white'
-              : 'bg-neutral-500 text-white'
-          }`}>
-            {property.status}
+              ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
+              : 'bg-gray-500/20 text-gray-400 border border-gray-500/30'}
+          `}>
+            {property.status.toUpperCase()}
           </span>
         </div>
-
-        {/* Quick Action Buttons - Appear on Hover */}
-        <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-2">
+        
+        {/* Quick actions (visible on hover) */}
+        <div className="absolute top-3 right-3 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex gap-2">
           <button 
             onClick={(e) => { e.stopPropagation(); handleEditProperty(property); }}
-            className="w-10 h-10 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition-colors duration-200 shadow-lg"
+            className="p-2 bg-black/50 backdrop-blur-md rounded-lg hover:bg-black/70 transition-colors"
           >
-            <Edit2 className="w-4 h-4 text-primary-700" />
+            <Edit2 className="w-4 h-4 text-white" />
           </button>
           <button 
             onClick={(e) => { e.stopPropagation(); onClick(); }}
-            className="w-10 h-10 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition-colors duration-200 shadow-lg"
+            className="p-2 bg-black/50 backdrop-blur-md rounded-lg hover:bg-black/70 transition-colors"
           >
-            <Eye className="w-4 h-4 text-primary-700" />
+            <Eye className="w-4 h-4 text-white" />
           </button>
           <button 
             onClick={(e) => { e.stopPropagation(); handleDeleteProperty(property.id); }}
-            className="w-10 h-10 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition-colors duration-200 shadow-lg"
+            className="p-2 bg-black/50 backdrop-blur-md rounded-lg hover:bg-black/70 transition-colors"
           >
-            <Trash2 className="w-4 h-4 text-danger-600" />
+            <Trash2 className="w-4 h-4 text-white" />
           </button>
         </div>
       </div>
-
-      {/* Content Section */}
-      <div className="p-6">
-        <div className="flex items-start justify-between mb-4">
-          <h3 className="text-lg font-semibold text-primary-900 group-hover:text-accent-600 transition-colors duration-200 line-clamp-2">
-            {property.title}
-          </h3>
-        </div>
-
-        <p className="text-2xl font-bold mb-4 text-accent-600">
+      
+      {/* Content */}
+      <div className="p-5">
+        <h3 className="text-lg font-semibold text-white mb-2 group-hover:text-blue-400 transition-colors">
+          {property.title}
+        </h3>
+        
+        {/* Price with animation */}
+        <div className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-3">
           ${property.price?.toLocaleString()}
-        </p>
-
-        <div className="space-y-3 text-sm text-neutral-600 mb-4">
-          <p className="flex items-center gap-2">
-            <MapPin className="w-4 h-4 text-accent-500" />
-            <span className="truncate">{property.city}, {property.state}</span>
-          </p>
+        </div>
+        
+        {/* Metrics grid */}
+        <div className="grid grid-cols-2 gap-3 text-sm">
+          <div className="flex items-center text-gray-400">
+            <MapPin className="w-4 h-4 mr-1 text-gray-500" />
+            {property.city}, {property.state}
+          </div>
           {property.sqft && (
-            <p className="flex items-center gap-2">
-              <Building2 className="w-4 h-4 text-accent-500" />
-              <span>{property.sqft.toLocaleString()} sq ft</span>
-            </p>
-          )}
-          {property.property_type && (
-            <p className="flex items-center gap-2">
-              <div className="w-4 h-4 bg-accent-100 rounded flex items-center justify-center">
-                <div className="w-2 h-2 bg-accent-500 rounded"></div>
-              </div>
-              <span className="truncate">{property.property_type}</span>
-            </p>
+            <div className="flex items-center text-gray-400">
+              <Building2 className="w-4 h-4 mr-1 text-gray-500" />
+              {property.sqft.toLocaleString()} sq ft
+            </div>
           )}
         </div>
-
-        {/* Stats Footer */}
-        <div className="pt-4 border-t border-neutral-200 flex items-center justify-between text-sm text-neutral-500">
-          <span className="flex items-center gap-1">
-            <Eye className="w-4 h-4" />
-            {property.views || 0} views
-          </span>
-          <span className="flex items-center gap-1">
-            <Mail className="w-4 h-4" />
-            {property.inquiries || 0} inquiries
-          </span>
+        
+        {/* Action buttons */}
+        <div className="mt-4 flex gap-2">
+          <button className="flex-1 py-2 bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 rounded-lg transition-colors text-sm font-medium">
+            View Details
+          </button>
+          <button className="flex-1 py-2 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-lg transition-colors text-sm font-medium">
+            Schedule Tour
+          </button>
         </div>
       </div>
     </div>
@@ -2576,7 +2495,18 @@ const IndustrialCRM = () => {
   );
 
   // Render login or main layout based on authentication state
-  return <div className="min-h-screen" style={{ background: '#0A0A0B' }}>{!isLoggedIn ? <LoginView /> : <MainLayout />}</div>;
+  return (
+    <div 
+      className="min-h-screen" 
+      style={{
+        minHeight: '100vh',
+        background: 'linear-gradient(180deg, #0A0A0B 0%, #0F0F10 100%)',
+        color: '#E4E4E7'
+      }}
+    >
+      {!isLoggedIn ? <LoginView /> : <MainLayout />}
+    </div>
+  );
 };
 
 export default IndustrialCRM;
