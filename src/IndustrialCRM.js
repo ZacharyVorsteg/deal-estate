@@ -684,7 +684,7 @@ const IndustrialCRM = () => {
   };
 
   /**
-   * Sidebar component listing navigation options. Collapsible on mobile.
+   * Sidebar component with modern design and collapsible functionality.
    */
   const Sidebar = () => (
     <div
@@ -696,11 +696,11 @@ const IndustrialCRM = () => {
         {/* Logo Section */}
         <div className="p-6 border-b border-neutral-200">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center">
+            <div className="w-10 h-10 bg-gradient-to-br from-primary-800 to-primary-900 rounded-xl flex items-center justify-center shadow-lg">
               <Building2 className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h2 className="text-2xl font-bold bg-gradient-to-r from-neutral-800 to-neutral-600 bg-clip-text text-transparent">
+              <h2 className="text-2xl font-bold bg-gradient-to-r from-primary-900 to-primary-700 bg-clip-text text-transparent font-display">
                 Deal Estate
               </h2>
               <p className="text-sm text-neutral-500 font-medium">
@@ -712,32 +712,67 @@ const IndustrialCRM = () => {
 
         {/* Navigation */}
         <nav className="flex-1 p-4 space-y-2">
-          <SidebarItem icon={Home} label="Dashboard" active={currentView === 'dashboard'} onClick={() => { setCurrentView('dashboard'); setShowMobileMenu(false); }} />
-          <SidebarItem icon={Building2} label="Properties" active={currentView === 'properties'} onClick={() => { setCurrentView('properties'); setShowMobileMenu(false); }} />
-          <SidebarItem icon={Users} label="Clients" active={currentView === 'clients'} onClick={() => { setCurrentView('clients'); setShowMobileMenu(false); }} />
-          <SidebarItem icon={Bell} label="Notifications" active={currentView === 'notifications'} onClick={() => { setCurrentView('notifications'); setShowMobileMenu(false); }} />
-          <SidebarItem icon={TrendingUp} label="Analytics" active={currentView === 'analytics'} onClick={() => { setCurrentView('analytics'); setShowMobileMenu(false); }} />
+          <SidebarItem 
+            icon={Home} 
+            label="Dashboard" 
+            active={currentView === 'dashboard'} 
+            onClick={() => { setCurrentView('dashboard'); setShowMobileMenu(false); }} 
+          />
+          <SidebarItem 
+            icon={Building2} 
+            label="Properties" 
+            active={currentView === 'properties'} 
+            onClick={() => { setCurrentView('properties'); setShowMobileMenu(false); }} 
+          />
+          <SidebarItem 
+            icon={Users} 
+            label="Clients" 
+            active={currentView === 'clients'} 
+            onClick={() => { setCurrentView('clients'); setShowMobileMenu(false); }} 
+          />
+          <SidebarItem 
+            icon={Bell} 
+            label="Notifications" 
+            active={currentView === 'notifications'} 
+            onClick={() => { setCurrentView('notifications'); setShowMobileMenu(false); }} 
+          />
+          <SidebarItem 
+            icon={TrendingUp} 
+            label="Analytics" 
+            active={currentView === 'analytics'} 
+            onClick={() => { setCurrentView('analytics'); setShowMobileMenu(false); }} 
+          />
           
           <div className="mt-8 pt-8 border-t border-neutral-200">
-            <SidebarItem icon={Settings} label="Settings" active={currentView === 'settings'} onClick={() => { setCurrentView('settings'); setShowMobileMenu(false); }} />
-            <SidebarItem icon={CreditCard} label="Billing" active={currentView === 'billing'} onClick={() => { setCurrentView('billing'); setShowMobileMenu(false); }} />
+            <SidebarItem 
+              icon={Settings} 
+              label="Settings" 
+              active={currentView === 'settings'} 
+              onClick={() => { setCurrentView('settings'); setShowMobileMenu(false); }} 
+            />
+            <SidebarItem 
+              icon={CreditCard} 
+              label="Billing" 
+              active={currentView === 'billing'} 
+              onClick={() => { setCurrentView('billing'); setShowMobileMenu(false); }} 
+            />
           </div>
         </nav>
 
         {/* User Profile Section */}
         <div className="p-4 border-t border-neutral-200">
           <div className="flex items-center gap-3 mb-4 p-3 rounded-xl bg-neutral-50 hover:bg-neutral-100 transition-colors duration-200">
-            <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center text-white font-semibold text-lg shadow-md">
+            <div className="w-12 h-12 bg-gradient-to-br from-primary-800 to-primary-900 rounded-xl flex items-center justify-center text-white font-semibold text-lg shadow-md">
               {userProfile.name.charAt(0)}
             </div>
             <div className="flex-1">
-              <p className="font-semibold text-sm text-neutral-800">{userProfile.name}</p>
+              <p className="font-semibold text-sm text-primary-900">{userProfile.name}</p>
               <p className="text-xs text-neutral-500">{userProfile.company}</p>
             </div>
           </div>
           <button
             onClick={handleLogout}
-            className="w-full text-left text-sm px-4 py-3 rounded-xl hover:bg-red-50 hover:text-red-600 transition-all duration-200 text-red-500 font-medium flex items-center gap-2"
+            className="w-full text-left text-sm px-4 py-3 rounded-xl hover:bg-red-50 hover:text-red-600 transition-all duration-200 text-red-500 font-medium flex items-center gap-2 ripple"
           >
             <ShieldCheck className="w-4 h-4" />
             Sign Out
@@ -748,23 +783,31 @@ const IndustrialCRM = () => {
   );
 
   /**
-   * Reusable sidebar item. Highlights if active.
+   * Sidebar navigation item with modern design and active indicators.
    */
   const SidebarItem = ({ icon: Icon, label, active, onClick }) => (
     <button
       onClick={onClick}
-      className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${
-        active 
-          ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-md' 
+      className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group relative ${
+        active
+          ? 'bg-gradient-to-r from-primary-800 to-primary-900 text-white shadow-lg'
           : 'text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900'
       }`}
     >
-      <Icon className={`w-5 h-5 transition-transform duration-200 ${
-        active ? 'text-white' : 'text-neutral-500 group-hover:text-neutral-700'
-      }`} />
-      <span className="font-medium">{label}</span>
+      {/* Active Left Border Indicator */}
+      {active && (
+        <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-1 h-8 bg-accent-500 rounded-r-full"></div>
+      )}
       
-      {/* Active indicator */}
+      <Icon className={`w-5 h-5 transition-all duration-200 ${
+        active 
+          ? 'text-white' 
+          : 'text-neutral-500 group-hover:text-neutral-700 group-hover:scale-110'
+      }`} />
+      
+      <span className="font-medium">{label}</span>
+
+      {/* Active indicator dot */}
       {active && (
         <div className="ml-auto w-2 h-2 bg-white rounded-full opacity-80"></div>
       )}
@@ -772,17 +815,17 @@ const IndustrialCRM = () => {
   );
 
   /**
-   * Top bar with search and notifications. Collapsible menu on mobile.
+   * Top bar with modern design and enhanced functionality.
    */
   const TopBar = () => (
-    <div className="bg-white/80 backdrop-blur-sm border-b border-neutral-200 px-6 py-4 flex items-center justify-between sticky top-0 z-40">
-      <button 
-        onClick={() => setShowMobileMenu(!showMobileMenu)} 
-        className="lg:hidden p-2 rounded-xl hover:bg-neutral-100 transition-colors duration-200"
+    <div className="bg-white/90 backdrop-blur-sm border-b border-neutral-200 px-6 py-4 flex items-center justify-between sticky top-0 z-40 shadow-sm">
+      <button
+        onClick={() => setShowMobileMenu(!showMobileMenu)}
+        className="lg:hidden p-2 rounded-xl hover:bg-neutral-100 transition-colors duration-200 ripple"
       >
         <Menu className="w-6 h-6 text-neutral-700" />
       </button>
-      
+
       <div className="flex-1 max-w-xl mx-4">
         <div className="relative">
           <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-neutral-400" />
@@ -791,43 +834,43 @@ const IndustrialCRM = () => {
             placeholder="Search properties, clients..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-12 pr-4 py-3 rounded-xl border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 bg-white/50 backdrop-blur-sm"
+            className="w-full pl-12 pr-4 py-3 rounded-xl border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500 transition-all duration-200 bg-white/80 backdrop-blur-sm shadow-sm hover:shadow-md"
           />
         </div>
       </div>
-      
+
       <div className="flex items-center gap-4">
-        <button className="relative p-3 rounded-xl hover:bg-neutral-100 transition-all duration-200 group">
-          <Bell className="w-5 h-5 text-neutral-600 group-hover:text-neutral-800" />
+        {/* Notifications */}
+        <button className="relative p-3 rounded-xl hover:bg-neutral-100 transition-all duration-200 group ripple">
+          <Bell className="w-5 h-5 text-neutral-600 group-hover:text-neutral-800 group-hover:scale-110 transition-all duration-200" />
           {notifications.length > 0 && (
-            <span className="absolute top-2 right-2 w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>
+            <span className="absolute top-2 right-2 w-3 h-3 bg-accent-500 rounded-full animate-pulse"></span>
           )}
         </button>
-        
+
         {/* User Profile Quick Access */}
-        <div className="hidden md:flex items-center gap-3 p-2 rounded-xl hover:bg-neutral-50 transition-colors duration-200 cursor-pointer">
-          <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center text-white text-sm font-semibold">
+        <div className="hidden md:flex items-center gap-3 p-2 rounded-xl hover:bg-neutral-50 transition-colors duration-200 cursor-pointer ripple">
+          <div className="w-8 h-8 bg-gradient-to-br from-primary-800 to-primary-900 rounded-lg flex items-center justify-center text-white text-sm font-semibold shadow-md">
             {userProfile.name.charAt(0)}
           </div>
-          <span className="text-sm font-medium text-neutral-700">{userProfile.name}</span>
+          <span className="text-sm font-medium text-primary-700">{userProfile.name}</span>
         </div>
       </div>
     </div>
   );
 
   /**
-   * Login screen. For proof-of-concept the credentials are hard-coded but any
-   * input will work.
+   * Login view with modern glass morphism design.
    */
   const LoginView = () => (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-neutral-50 via-white to-primary-50 p-4">
       <div className="max-w-md w-full animate-fade-in-up">
         {/* Logo and Branding */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-primary-500 to-primary-600 rounded-2xl shadow-lg mb-6">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-primary-800 to-primary-900 rounded-2xl shadow-2xl mb-6">
             <Building2 className="w-10 h-10 text-white" />
           </div>
-          <h1 className="text-4xl font-bold mb-3 bg-gradient-to-r from-neutral-800 to-neutral-600 bg-clip-text text-transparent">
+          <h1 className="text-4xl font-bold mb-3 bg-gradient-to-r from-primary-900 to-primary-700 bg-clip-text text-transparent font-display">
             Deal Estate
           </h1>
           <p className="text-lg text-neutral-600 font-medium">
@@ -836,11 +879,11 @@ const IndustrialCRM = () => {
         </div>
 
         {/* Login Form Card */}
-        <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl border border-white/20 p-8 hover:shadow-3xl transition-all duration-500">
-          <h2 className="text-2xl font-bold mb-8 text-center text-neutral-800">
+        <div className="card-glass p-8 hover:shadow-2xl transition-all duration-500">
+          <h2 className="text-2xl font-bold mb-8 text-center text-primary-900 font-display">
             Welcome Back
           </h2>
-          
+
           <div className="space-y-6">
             <div className="form-group">
               <label className="form-label">Username</label>
@@ -852,7 +895,7 @@ const IndustrialCRM = () => {
                 placeholder="Enter your username"
               />
             </div>
-            
+
             <div className="form-group">
               <label className="form-label">Password</label>
               <input
@@ -863,10 +906,10 @@ const IndustrialCRM = () => {
                 placeholder="Enter your password"
               />
             </div>
-            
-            <button 
-              onClick={handleLogin} 
-              className="btn-primary w-full text-lg py-4 focus-ring"
+
+            <button
+              onClick={handleLogin}
+              className="btn-primary w-full text-lg py-4 focus-ring ripple"
             >
               Sign In
             </button>
@@ -891,83 +934,250 @@ const IndustrialCRM = () => {
   );
 
   /**
-   * Dashboard view summarising key metrics and recent activity.
+   * Dashboard view with modern glass morphism design and improved layout.
    */
   const DashboardView = () => {
-    const activeProperties = properties.filter((p) => p.status === 'active').length;
-    const activeClients = clients.filter((c) => c.status === 'active').length;
-    const leasedClients = clients.filter((c) => c.status === 'leased').length;
-    const recentNotifications = notifications.slice(0, 5);
+    const totalProperties = properties.length;
+    const activeProperties = properties.filter(p => p.status === 'active').length;
+    const totalClients = clients.length;
+    const activeClients = clients.filter(c => c.status === 'active').length;
+    const leasedClients = clients.filter(c => c.status === 'leased').length;
+    const conversionRate = totalClients > 0 ? Math.round((leasedClients / totalClients) * 100) : 0;
+
+    // Mock trend data for sparklines
+    const trends = {
+      properties: [2, 3, 4, 5, 6, 7],
+      clients: [1, 2, 3, 4, 5, 6],
+      inquiries: [3, 5, 8, 12, 15, 18]
+    };
+
     return (
-      <div className="p-6">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2" style={{ color: colors.primary }}>Dashboard</h1>
-          <p style={{ color: colors.textSecondary }}>Welcome back, {userProfile.name}</p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <MetricCard title="Active Properties" value={activeProperties} icon={Building2} trend="+12%" color={colors.accent} />
-          <MetricCard title="Active Clients" value={activeClients} icon={Users} trend={`${leasedClients} leased`} color={colors.success} />
-          <MetricCard title="Notifications Sent" value={notifications.length} icon={Bell} trend="+23%" color={colors.warning} />
-          <MetricCard
-            title="Conversion Rate"
-            value={leasedClients > 0 ? Math.round((leasedClients / (activeClients + leasedClients)) * 100) + '%' : '0%'}
-            icon={TrendingUp}
-            trend="leased/total"
-            color={colors.primary}
-          />
-        </div>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="bg-white rounded-xl shadow-sm p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold" style={{ color: colors.primary }}>Recent Properties</h2>
-              <button onClick={() => setCurrentView('add-property')} className="text-sm font-medium flex items-center gap-2 hover:opacity-80" style={{ color: colors.accent }}>
-                <Plus className="w-4 h-4" />
-                Add New
-              </button>
-            </div>
-            <div className="space-y-3">
-              {properties.slice(0, 3).map((property) => (
-                <div key={property.id} className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 cursor-pointer" onClick={() => { setSelectedProperty(property); setCurrentView('property-detail'); }}>
-                  <div className="flex items-center gap-3">
-                    {property.image ? (
-                      <img src={property.image} alt={property.title} className="w-12 h-12 rounded-lg object-cover" />
-                    ) : (
-                      <div className="w-12 h-12 rounded-lg flex items-center justify-center" style={{ backgroundColor: colors.background }}>
-                        <Building2 className="w-6 h-6" style={{ color: colors.textSecondary }} />
-                      </div>
-                    )}
-                    <div>
-                      <p className="font-medium" style={{ color: colors.textPrimary }}>{property.title}</p>
-                      <p className="text-sm" style={{ color: colors.textSecondary }}>{property.city}, {property.state}</p>
-                    </div>
-                  </div>
-                  <ChevronRight className="w-5 h-5" style={{ color: colors.textSecondary }} />
+      <div className="p-6 bg-neutral-50 min-h-screen">
+        <div className="max-w-7xl mx-auto">
+          {/* Header */}
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-primary-900 mb-2 font-display">Dashboard</h1>
+            <p className="text-lg text-neutral-600">Welcome back! Here's what's happening with your properties.</p>
+          </div>
+
+          {/* Key Metrics Grid - 12 Column System */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div className="metric-card group">
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-14 h-14 bg-gradient-to-br from-primary-50 to-primary-100 rounded-2xl flex items-center justify-center group-hover:from-primary-100 group-hover:to-primary-200 transition-all duration-300">
+                  <Building2 className="w-7 h-7 text-primary-600" />
                 </div>
-              ))}
+                <div className="text-right">
+                  <div className="flex items-center gap-1 text-sm font-semibold px-3 py-1 rounded-full bg-success-50 text-success-700 border border-success-200">
+                    <div className="w-2 h-2 bg-success-500 rounded-full"></div>
+                    Active
+                  </div>
+                  {/* Mini Sparkline */}
+                  <div className="flex items-end gap-0.5 mt-1">
+                    {trends.properties.map((value, index) => (
+                      <div
+                        key={index}
+                        className="w-1 bg-accent-300 rounded-full"
+                        style={{ height: `${(value / Math.max(...trends.properties)) * 20}px` }}
+                      ></div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <h3 className="metric-value mb-2">{totalProperties}</h3>
+              <p className="metric-label">{activeProperties} Active Properties</p>
+              <div className="mt-4 w-12 h-1 bg-gradient-to-r from-primary-400 to-primary-500 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
+            </div>
+
+            <div className="metric-card group">
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-14 h-14 bg-gradient-to-br from-accent-50 to-accent-100 rounded-2xl flex items-center justify-center group-hover:from-accent-100 group-hover:to-accent-200 transition-all duration-300">
+                  <Users className="w-7 h-7 text-accent-600" />
+                </div>
+                <div className="text-right">
+                  <div className="flex items-center gap-1 text-sm font-semibold px-3 py-1 rounded-full bg-accent-50 text-accent-700 border border-accent-200">
+                    <div className="w-2 h-2 bg-accent-500 rounded-full"></div>
+                    Total
+                  </div>
+                  {/* Mini Sparkline */}
+                  <div className="flex items-end gap-0.5 mt-1">
+                    {trends.clients.map((value, index) => (
+                      <div
+                        key={index}
+                        className="w-1 bg-accent-300 rounded-full"
+                        style={{ height: `${(value / Math.max(...trends.clients)) * 20}px` }}
+                      ></div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <h3 className="metric-value mb-2">{totalClients}</h3>
+              <p className="metric-label">{activeClients} Active Clients</p>
+              <div className="mt-4 w-12 h-1 bg-gradient-to-r from-accent-400 to-accent-500 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
+            </div>
+
+            <div className="metric-card group">
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-14 h-14 bg-gradient-to-br from-success-50 to-success-100 rounded-2xl flex items-center justify-center group-hover:from-success-100 group-hover:to-success-200 transition-all duration-300">
+                  <TrendingUp className="w-7 h-7 text-success-600" />
+                </div>
+                <div className="text-right">
+                  <div className="flex items-center gap-1 text-sm font-semibold px-3 py-1 rounded-full bg-success-50 text-success-700 border border-success-200">
+                    <div className="w-2 h-2 bg-success-500 rounded-full"></div>
+                    {conversionRate}%
+                  </div>
+                  {/* Mini Sparkline */}
+                  <div className="flex items-end gap-0.5 mt-1">
+                    {trends.inquiries.map((value, index) => (
+                      <div
+                        key={index}
+                        className="w-1 bg-success-300 rounded-full"
+                        style={{ height: `${(value / Math.max(...trends.inquiries)) * 20}px` }}
+                      ></div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <h3 className="metric-value mb-2">{conversionRate}%</h3>
+              <p className="metric-label">Conversion Rate</p>
+              <div className="mt-4 w-12 h-1 bg-gradient-to-r from-success-400 to-success-500 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
+            </div>
+
+            <div className="metric-card group">
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-14 h-14 bg-gradient-to-br from-warning-50 to-warning-100 rounded-2xl flex items-center justify-center group-hover:from-warning-100 group-hover:to-warning-200 transition-all duration-300">
+                  <Bell className="w-7 h-7 text-warning-600" />
+                </div>
+                <div className="text-right">
+                  <div className="flex items-center gap-1 text-sm font-semibold px-3 py-1 rounded-full bg-warning-50 text-warning-700 border border-warning-200">
+                    <div className="w-2 h-2 bg-warning-500 rounded-full"></div>
+                    Recent
+                  </div>
+                  {/* Mini Sparkline */}
+                  <div className="flex items-end gap-0.5 mt-1">
+                    {[3, 5, 8, 12, 15, 18].map((value, index) => (
+                      <div
+                        key={index}
+                        className="w-1 bg-warning-300 rounded-full"
+                        style={{ height: `${(value / 18) * 20}px` }}
+                      ></div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <h3 className="metric-value mb-2">{notifications.length}</h3>
+              <p className="metric-label">Notifications Sent</p>
+              <div className="mt-4 w-12 h-1 bg-gradient-to-r from-warning-400 to-warning-500 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
             </div>
           </div>
-          <div className="bg-white rounded-xl shadow-sm p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold" style={{ color: colors.primary }}>Recent Activity</h2>
-              <button onClick={() => setCurrentView('notifications')} className="text-sm font-medium hover:opacity-80" style={{ color: colors.accent }}>
-                View All
-              </button>
-            </div>
-            <div className="space-y-3">
-              {recentNotifications.map((notification) => (
-                <div key={notification.id} className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50">
-                  <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: colors.success + '20' }}>
-                    <Mail className="w-4 h-4" style={{ color: colors.success }} />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium" style={{ color: colors.textPrimary }}>Notification sent to {notification.clientName}</p>
-                    <p className="text-xs truncate" style={{ color: colors.textSecondary }}>Property: {notification.property}</p>
-                  </div>
-                  <span className="text-xs flex-shrink-0" style={{ color: colors.textSecondary }}>
-                    {new Date(notification.timestamp).toLocaleTimeString()}
-                  </span>
+
+          {/* Content Grid - 12 Column System */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            {/* Recent Properties - 8 columns */}
+            <div className="lg:col-span-8">
+              <div className="card p-6">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-xl font-semibold text-primary-900 font-display">Recent Properties</h2>
+                  <button 
+                    onClick={() => setCurrentView('properties')}
+                    className="btn-accent text-sm py-2 px-4 ripple"
+                  >
+                    View All
+                  </button>
                 </div>
-              ))}
+                <div className="space-y-4">
+                  {properties.slice(0, 5).map((property) => (
+                    <div key={property.id} className="flex items-center gap-4 p-4 rounded-lg hover:bg-neutral-50 transition-colors duration-200">
+                      <div className="w-16 h-16 bg-gradient-to-br from-primary-100 to-primary-200 rounded-lg flex items-center justify-center">
+                        <Building2 className="w-8 h-8 text-primary-600" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-primary-900">{property.title}</h3>
+                        <p className="text-sm text-neutral-600">{property.city}, {property.state}</p>
+                        <div className="flex items-center gap-4 mt-1 text-xs text-neutral-500">
+                          <span>${property.price?.toLocaleString()}</span>
+                          <span>{property.sqft?.toLocaleString()} sq ft</span>
+                          <span className={`px-2 py-1 rounded-full ${
+                            property.status === 'active' ? 'status-active' : 'status-inactive'
+                          }`}>
+                            {property.status}
+                          </span>
+                        </div>
+                      </div>
+                      <button 
+                        onClick={() => { setSelectedProperty(property); setCurrentView('property-detail'); }}
+                        className="btn-secondary text-sm py-2 px-3 ripple"
+                      >
+                        View
+                      </button>
+                    </div>
+                  ))}
+                  {properties.length === 0 && (
+                    <div className="text-center py-8 text-neutral-500">
+                      <Building2 className="w-12 h-12 mx-auto mb-3 text-neutral-300" />
+                      <p>No properties added yet</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Quick Actions & Stats - 4 columns */}
+            <div className="lg:col-span-4 space-y-6">
+              {/* Quick Actions */}
+              <div className="card p-6">
+                <h3 className="text-lg font-semibold text-primary-900 mb-4 font-display">Quick Actions</h3>
+                <div className="space-y-3">
+                  <button 
+                    onClick={() => setCurrentView('add-property')}
+                    className="w-full btn-primary text-left py-3 px-4 ripple"
+                  >
+                    <Plus className="w-4 h-4 inline mr-2" />
+                    Add Property
+                  </button>
+                  <button 
+                    onClick={() => setCurrentView('add-manual-client')}
+                    className="w-full btn-accent text-left py-3 px-4 ripple"
+                  >
+                    <UserPlus className="w-4 h-4 inline mr-2" />
+                    Add Client
+                  </button>
+                  <button 
+                    onClick={() => setCurrentView('analytics')}
+                    className="w-full btn-secondary text-left py-3 px-4 ripple"
+                  >
+                    <TrendingUp className="w-4 h-4 inline mr-2" />
+                    View Analytics
+                  </button>
+                </div>
+              </div>
+
+              {/* Recent Activity */}
+              <div className="card p-6">
+                <h3 className="text-lg font-semibold text-primary-900 mb-4 font-display">Recent Activity</h3>
+                <div className="space-y-3">
+                  {notifications.slice(0, 3).map((notification) => (
+                    <div key={notification.id} className="flex items-start gap-3 p-3 rounded-lg bg-neutral-50">
+                      <div className="w-8 h-8 bg-accent-100 rounded-full flex items-center justify-center">
+                        <Bell className="w-4 h-4 text-accent-600" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-primary-900 truncate">
+                          Notification sent to {notification.clientName}
+                        </p>
+                        <p className="text-xs text-neutral-500">
+                          {new Date(notification.timestamp).toLocaleDateString()}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                  {notifications.length === 0 && (
+                    <div className="text-center py-4 text-neutral-500">
+                      <p className="text-sm">No recent activity</p>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -997,35 +1207,98 @@ const IndustrialCRM = () => {
   );
 
   /**
-   * Displays a list of properties. Supports filtering by status.
+   * Properties view with modern design and improved layout.
    */
   const PropertiesView = () => {
-    const filteredProperties = properties.filter((p) => filterStatus === 'all' || p.status === filterStatus);
+    const filteredProperties = properties.filter((property) => {
+      const matchesSearch = !searchQuery || 
+        property.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        property.city.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        property.state.toLowerCase().includes(searchQuery.toLowerCase());
+      
+      const matchesStatus = filterStatus === 'all' || property.status === filterStatus;
+      
+      return matchesSearch && matchesStatus;
+    });
+
     return (
-      <div className="p-6">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold mb-2" style={{ color: colors.primary }}>Properties</h1>
-            <p style={{ color: colors.textSecondary }}>{filteredProperties.length} total properties</p>
+      <div className="p-6 bg-neutral-50 min-h-screen">
+        <div className="max-w-7xl mx-auto">
+          {/* Header */}
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-primary-900 mb-2 font-display">Properties</h1>
+            <p className="text-lg text-neutral-600">Manage your industrial real estate portfolio</p>
           </div>
-          <button onClick={() => setCurrentView('add-property')} className="px-4 py-2 rounded-lg font-medium text-white flex items-center gap-2 hover:shadow-lg transition-all" style={{ backgroundColor: colors.accent }}>
-            <Plus className="w-5 h-5" />
-            Add Property
-          </button>
-        </div>
-        <div className="bg-white rounded-xl shadow-sm mb-6 p-4">
-          <div className="flex items-center gap-4">
-            <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)} className="px-4 py-2 rounded-lg border focus:outline-none" style={{ borderColor: colors.border }}>
-              <option value="all">All Properties</option>
-              <option value="active">Active</option>
-              <option value="archived">Archived</option>
-            </select>
+
+          {/* Controls */}
+          <div className="flex flex-col sm:flex-row gap-4 mb-8">
+            <div className="flex-1">
+              <div className="relative">
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-neutral-400" />
+                <input
+                  type="text"
+                  placeholder="Search properties..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-12 pr-4 py-3 rounded-xl border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500 transition-all duration-200 bg-white shadow-sm"
+                />
+              </div>
+            </div>
+            
+            <div className="flex gap-3">
+              <select
+                value={filterStatus}
+                onChange={(e) => setFilterStatus(e.target.value)}
+                className="px-4 py-3 rounded-xl border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500 transition-all duration-200 bg-white shadow-sm"
+              >
+                <option value="all">All Status</option>
+                <option value="active">Active</option>
+                <option value="leased">Leased</option>
+                <option value="archived">Archived</option>
+              </select>
+              
+              <button
+                onClick={() => setCurrentView('add-property')}
+                className="btn-primary px-6 py-3 ripple"
+              >
+                <Plus className="w-5 h-5 mr-2" />
+                Add Property
+              </button>
+            </div>
           </div>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredProperties.map((property) => (
-            <PropertyCard key={property.id} property={property} onClick={() => { setSelectedProperty(property); setCurrentView('property-detail'); }} />
-          ))}
+
+          {/* Properties Grid */}
+          {filteredProperties.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {filteredProperties.map((property) => (
+                <PropertyCard
+                  key={property.id}
+                  property={property}
+                  onClick={() => { setSelectedProperty(property); setCurrentView('property-detail'); }}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-16">
+              <Building2 className="w-16 h-16 mx-auto mb-4 text-neutral-300" />
+              <h3 className="text-lg font-semibold text-neutral-600 mb-2">No properties found</h3>
+              <p className="text-neutral-500 mb-6">
+                {searchQuery || filterStatus !== 'all' 
+                  ? 'Try adjusting your search or filters' 
+                  : 'Get started by adding your first property'
+                }
+              </p>
+              {!searchQuery && filterStatus === 'all' && (
+                <button
+                  onClick={() => setCurrentView('add-property')}
+                  className="btn-primary ripple"
+                >
+                  <Plus className="w-5 h-5 mr-2" />
+                  Add Your First Property
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </div>
     );
@@ -1035,49 +1308,95 @@ const IndustrialCRM = () => {
    * Small card showing summary information for a property in a list.
    */
   const PropertyCard = ({ property, onClick }) => (
-    <div onClick={onClick} className="card-hover overflow-hidden cursor-pointer group">
-      {property.image ? (
-        <div className="relative overflow-hidden">
-          <img src={property.image} alt={property.title} className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-        </div>
-      ) : (
-        <div className="w-full h-48 flex items-center justify-center bg-gradient-to-br from-neutral-100 to-neutral-200 group-hover:from-neutral-200 group-hover:to-neutral-300 transition-all duration-300">
-          <Building2 className="w-16 h-16 text-neutral-400" />
-        </div>
-      )}
-      
-      <div className="p-6">
-        <div className="flex items-start justify-between mb-4">
-          <h3 className="text-lg font-semibold text-neutral-800 group-hover:text-primary-600 transition-colors duration-200">
-            {property.title}
-          </h3>
-          <span className={`px-3 py-1 text-xs font-semibold rounded-full ${
-            property.status === 'active' 
-              ? 'bg-success-50 text-success-700 border border-success-200' 
-              : 'bg-neutral-100 text-neutral-600 border border-neutral-200'
+    <div className="card-hover overflow-hidden cursor-pointer group">
+      {/* Image Section with Aspect Ratio */}
+      <div className="relative aspect-video overflow-hidden">
+        {property.image ? (
+          <>
+            <img 
+              src={property.image} 
+              alt={property.title} 
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+            />
+            {/* Overlay Gradient */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          </>
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-neutral-100 to-neutral-200 group-hover:from-neutral-200 group-hover:to-neutral-300 transition-all duration-300">
+            <Building2 className="w-16 h-16 text-neutral-400" />
+          </div>
+        )}
+        
+        {/* Status Badge */}
+        <div className="absolute top-3 right-3">
+          <span className={`px-3 py-1 text-xs font-semibold rounded-full shadow-lg ${
+            property.status === 'active'
+              ? 'bg-success-500 text-white'
+              : property.status === 'leased'
+              ? 'bg-accent-500 text-white'
+              : 'bg-neutral-500 text-white'
           }`}>
             {property.status}
           </span>
         </div>
-        
-        <p className="text-2xl font-bold mb-4 text-primary-600">
-          ${property.price.toLocaleString()}
+
+        {/* Quick Action Buttons - Appear on Hover */}
+        <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-2">
+          <button 
+            onClick={(e) => { e.stopPropagation(); handleEditProperty(property); }}
+            className="w-10 h-10 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition-colors duration-200 shadow-lg"
+          >
+            <Edit2 className="w-4 h-4 text-primary-700" />
+          </button>
+          <button 
+            onClick={(e) => { e.stopPropagation(); onClick(); }}
+            className="w-10 h-10 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition-colors duration-200 shadow-lg"
+          >
+            <Eye className="w-4 h-4 text-primary-700" />
+          </button>
+          <button 
+            onClick={(e) => { e.stopPropagation(); handleDeleteProperty(property.id); }}
+            className="w-10 h-10 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition-colors duration-200 shadow-lg"
+          >
+            <Trash2 className="w-4 h-4 text-danger-600" />
+          </button>
+        </div>
+      </div>
+
+      {/* Content Section */}
+      <div className="p-6">
+        <div className="flex items-start justify-between mb-4">
+          <h3 className="text-lg font-semibold text-primary-900 group-hover:text-accent-600 transition-colors duration-200 line-clamp-2">
+            {property.title}
+          </h3>
+        </div>
+
+        <p className="text-2xl font-bold mb-4 text-accent-600">
+          ${property.price?.toLocaleString()}
         </p>
-        
+
         <div className="space-y-3 text-sm text-neutral-600 mb-4">
           <p className="flex items-center gap-2">
-            <MapPin className="w-4 h-4 text-primary-500" />
-            {property.city}, {property.state}
+            <MapPin className="w-4 h-4 text-accent-500" />
+            <span className="truncate">{property.city}, {property.state}</span>
           </p>
           {property.sqft && (
             <p className="flex items-center gap-2">
-              <Building2 className="w-4 h-4 text-primary-500" />
-              {property.sqft.toLocaleString()} sq ft
+              <Building2 className="w-4 h-4 text-accent-500" />
+              <span>{property.sqft.toLocaleString()} sq ft</span>
+            </p>
+          )}
+          {property.property_type && (
+            <p className="flex items-center gap-2">
+              <div className="w-4 h-4 bg-accent-100 rounded flex items-center justify-center">
+                <div className="w-2 h-2 bg-accent-500 rounded"></div>
+              </div>
+              <span className="truncate">{property.property_type}</span>
             </p>
           )}
         </div>
-        
+
+        {/* Stats Footer */}
         <div className="pt-4 border-t border-neutral-200 flex items-center justify-between text-sm text-neutral-500">
           <span className="flex items-center gap-1">
             <Eye className="w-4 h-4" />
@@ -2079,7 +2398,7 @@ const IndustrialCRM = () => {
    * Main layout including sidebar, topbar and content area.
    */
   const MainLayout = () => (
-    <div className="flex h-screen" style={{ backgroundColor: colors.background }}>
+    <div className="flex h-screen bg-neutral-50">
       <Sidebar />
       <div className="flex-1 flex flex-col">
         <TopBar />
@@ -2101,7 +2420,7 @@ const IndustrialCRM = () => {
   );
 
   // Render login or main layout based on authentication state
-  return <div className="min-h-screen" style={{ backgroundColor: colors.background }}>{!isLoggedIn ? <LoginView /> : <MainLayout />}</div>;
+  return <div className="min-h-screen bg-neutral-50">{!isLoggedIn ? <LoginView /> : <MainLayout />}</div>;
 };
 
 export default IndustrialCRM;
