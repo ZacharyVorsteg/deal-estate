@@ -1,0 +1,8 @@
+/*
+  Cache-Control: no-cache, no-store, must-revalidate
+  
+/static/css/*
+  Cache-Control: no-cache, no-store, must-revalidate
+  
+/static/js/*
+  Cache-Control: max-age=31536000
