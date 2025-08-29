@@ -1129,15 +1129,16 @@ const IndustrialCRM = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             {/* Recent Properties - 8 columns */}
             <div className="lg:col-span-8">
-              <div className="bg-black/20 backdrop-blur-sm rounded-xl p-6 border border-white/6">
+              <div className="glass-card">
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-xl font-semibold text-white font-display">Recent Properties</h2>
-                  <button 
+                  <h2 className="text-xl font-semibold text-dark-primary font-display">Recent Properties</h2>
+                                    <button 
                     onClick={() => setCurrentView('properties')}
-                    className="btn btn-primary text-sm py-2 px-4"
+                    className="btn-premium"
+                    style={{ padding: '10px 20px', fontSize: '14px' }}
                   >
                     View All
-              </button>
+                  </button>
             </div>
                 <div className="space-y-4">
                   {properties.slice(0, 5).map((property) => (
@@ -1189,20 +1190,22 @@ const IndustrialCRM = () => {
                     <Plus className="w-4 h-4" />
                     Add Property
                   </button>
-                  <button 
+                                    <button 
                     onClick={() => setCurrentView('add-manual-client')}
-                    className="w-full btn btn-secondary text-left py-3 px-4"
+                    className="w-full btn-premium justify-start"
+                    style={{ background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.1))', border: '1px solid rgba(59, 130, 246, 0.3)' }}
                   >
-                    <UserPlus className="w-4 h-4 inline mr-2" />
+                    <UserPlus className="w-4 h-4" />
                     Add Client
                   </button>
                   <button 
                     onClick={() => setCurrentView('analytics')}
-                    className="w-full btn btn-ghost text-left py-3 px-4"
+                    className="w-full btn-premium justify-start"
+                    style={{ background: 'rgba(28, 28, 31, 0.8)', border: '1px solid rgba(255, 255, 255, 0.08)' }}
                   >
-                    <TrendingUp className="w-4 h-4 inline mr-2" />
+                    <TrendingUp className="w-4 h-4" />
                     View Analytics
-              </button>
+                  </button>
             </div>
               </div>
 
