@@ -57,13 +57,27 @@
     
     <!-- Override Tailwind defaults with our premium styles -->
     <style>
-      /* Force dark background */
+      /* Force dark background - v2.0 */
       body {
-        background: linear-gradient(180deg, #0A0A0B 0%, #0F0F10 100%) !important;
+        background: #0A0A0B !important;
         color: #E4E4E7 !important;
         min-height: 100vh !important;
       }
+      
+      /* Force override Tailwind button colors */
+      button {
+        background-image: none !important;
+      }
+      
+      /* Ensure our custom CSS loads */
+      .premium-kpi {
+        background: linear-gradient(135deg, #141416 0%, #1C1C1F 100%) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+      }
     </style>
+    
+    <!-- Cache bust CSS -->
+    <link rel="stylesheet" href="/static/css/main.css?v=2.0">
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
