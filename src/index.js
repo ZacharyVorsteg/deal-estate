@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import './PremiumStyles.css'; // Force premium styling
+import './PremiumStyles.css';
+import './FinalOptimized.css'; // Final optimized styling
 import App from './App';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

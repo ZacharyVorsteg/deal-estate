@@ -1,0 +1,523 @@
+/* Deal Estate CRM - Final Optimized Design System */
+
+/* ============================================
+   BASE STYLES & RESET
+   ============================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  background: #0A0A0B;
+  color: #E4E4E7;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================
+   LAYOUT STRUCTURE
+   ============================================ */
+.main-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #0A0A0B;
+}
+
+/* ============================================
+   SIDEBAR OPTIMIZATION
+   ============================================ */
+.sidebar {
+  width: 200px !important;
+  background: linear-gradient(180deg, #0F0F10 0%, #0A0A0B 100%) !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.05) !important;
+  position: fixed !important;
+  height: 100vh !important;
+  z-index: 40 !important;
+}
+
+/* Sidebar Items */
+.sidebar-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 10px 16px !important;
+  margin: 4px 8px !important;
+  border-radius: 8px !important;
+  color: #A1A1AA !important;
+  transition: all 0.2s ease !important;
+  cursor: pointer !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+}
+
+.sidebar-item:hover {
+  background: rgba(59, 130, 246, 0.1) !important;
+  color: #60A5FA !important;
+}
+
+.sidebar-item.active {
+  background: linear-gradient(90deg, rgba(59, 130, 246, 0.15) 0%, transparent 100%) !important;
+  color: #3B82F6 !important;
+  border-left: 3px solid #3B82F6 !important;
+}
+
+/* ============================================
+   TOP BAR OPTIMIZATION
+   ============================================ */
+.topbar {
+  position: fixed !important;
+  top: 0 !important;
+  left: 200px !important;
+  right: 0 !important;
+  height: 60px !important;
+  background: rgba(10, 10, 11, 0.95) !important;
+  backdrop-filter: blur(10px) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+  z-index: 30 !important;
+  display: flex !important;
+  align-items: center !important;
+  padding: 0 24px !important;
+}
+
+/* Search Bar */
+.search-bar {
+  max-width: 400px !important;
+  width: 100% !important;
+}
+
+.search-bar input {
+  width: 100% !important;
+  height: 36px !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 8px !important;
+  padding: 0 16px 0 40px !important;
+  color: #E4E4E7 !important;
+  font-size: 14px !important;
+  transition: all 0.2s ease !important;
+}
+
+.search-bar input:focus {
+  outline: none !important;
+  border-color: rgba(59, 130, 246, 0.3) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* ============================================
+   CONTENT AREA
+   ============================================ */
+.content-area {
+  margin-left: 200px !important;
+  padding-top: 60px !important;
+  width: calc(100% - 200px) !important;
+  min-height: 100vh !important;
+  background: #0A0A0B !important;
+}
+
+.dashboard-container {
+  padding: 24px !important;
+  max-width: 1400px !important;
+  margin: 0 auto !important;
+}
+
+/* ============================================
+   KPI CARDS - OPTIMIZED
+   ============================================ */
+.kpi-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+  gap: 20px !important;
+  margin-bottom: 32px !important;
+}
+
+.kpi-card {
+  background: linear-gradient(135deg, #141416 0%, #1A1A1D 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-radius: 12px !important;
+  padding: 20px !important;
+  position: relative !important;
+  overflow: hidden !important;
+  transition: all 0.3s ease !important;
+  min-height: 130px !important;
+}
+
+.kpi-card::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 2px !important;
+  background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.5), transparent) !important;
+  opacity: 0 !important;
+  transition: opacity 0.3s ease !important;
+}
+
+.kpi-card:hover {
+  transform: translateY(-4px) !important;
+  border-color: rgba(59, 130, 246, 0.2) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+}
+
+.kpi-card:hover::before {
+  opacity: 1 !important;
+}
+
+/* KPI Icon */
+.kpi-icon-wrapper {
+  width: 40px !important;
+  height: 40px !important;
+  background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%) !important;
+  border-radius: 10px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin-bottom: 12px !important;
+  font-size: 20px !important;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25) !important;
+}
+
+/* KPI Value */
+.kpi-value {
+  font-size: 28px !important;
+  font-weight: 700 !important;
+  color: #FFFFFF !important;
+  margin-bottom: 4px !important;
+  letter-spacing: -0.5px !important;
+}
+
+/* KPI Label */
+.kpi-label {
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  color: #71717A !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+}
+
+/* KPI Trend */
+.kpi-trend {
+  position: absolute !important;
+  top: 20px !important;
+  right: 20px !important;
+  padding: 4px 8px !important;
+  background: rgba(16, 185, 129, 0.1) !important;
+  border: 1px solid rgba(16, 185, 129, 0.2) !important;
+  border-radius: 6px !important;
+  color: #10B981 !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+}
+
+.kpi-trend.negative {
+  background: rgba(239, 68, 68, 0.1) !important;
+  border-color: rgba(239, 68, 68, 0.2) !important;
+  color: #EF4444 !important;
+}
+
+/* KPI Sparkline */
+.kpi-sparkline {
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 30px !important;
+  opacity: 0.3 !important;
+}
+
+.kpi-sparkline svg {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* ============================================
+   CARDS & CONTAINERS
+   ============================================ */
+.card {
+  background: rgba(20, 20, 22, 0.6) !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-radius: 12px !important;
+  padding: 20px !important;
+  margin-bottom: 20px !important;
+  transition: all 0.3s ease !important;
+}
+
+.card:hover {
+  border-color: rgba(59, 130, 246, 0.2) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+}
+
+.card-header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  margin-bottom: 16px !important;
+}
+
+.card-title {
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  color: #FFFFFF !important;
+}
+
+/* ============================================
+   BUTTONS - OPTIMIZED
+   ============================================ */
+button, .btn {
+  padding: 10px 20px !important;
+  border-radius: 8px !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  border: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%) !important;
+  color: white !important;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.25) !important;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.35) !important;
+}
+
+.btn-secondary {
+  background: rgba(59, 130, 246, 0.1) !important;
+  color: #60A5FA !important;
+  border: 1px solid rgba(59, 130, 246, 0.2) !important;
+}
+
+.btn-secondary:hover {
+  background: rgba(59, 130, 246, 0.15) !important;
+  border-color: rgba(59, 130, 246, 0.3) !important;
+}
+
+.btn-ghost {
+  background: transparent !important;
+  color: #A1A1AA !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: #E4E4E7 !important;
+}
+
+/* ============================================
+   PROPERTY CARDS
+   ============================================ */
+.property-card {
+  background: linear-gradient(135deg, #141416 0%, #1A1A1D 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  transition: all 0.3s ease !important;
+  cursor: pointer !important;
+}
+
+.property-card:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5) !important;
+  border-color: rgba(59, 130, 246, 0.2) !important;
+}
+
+.property-image {
+  height: 160px !important;
+  background: linear-gradient(135deg, #1A1A1D 0%, #141416 100%) !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.property-content {
+  padding: 16px !important;
+}
+
+.property-title {
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  color: #FFFFFF !important;
+  margin-bottom: 8px !important;
+}
+
+.property-price {
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  color: #3B82F6 !important;
+  margin-bottom: 12px !important;
+}
+
+.property-details {
+  display: flex !important;
+  gap: 16px !important;
+  font-size: 13px !important;
+  color: #71717A !important;
+}
+
+/* ============================================
+   STATUS BADGES
+   ============================================ */
+.badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: 4px 10px !important;
+  border-radius: 6px !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+}
+
+.badge-active {
+  background: rgba(16, 185, 129, 0.1) !important;
+  color: #10B981 !important;
+  border: 1px solid rgba(16, 185, 129, 0.2) !important;
+}
+
+.badge-pending {
+  background: rgba(251, 191, 36, 0.1) !important;
+  color: #FBBF24 !important;
+  border: 1px solid rgba(251, 191, 36, 0.2) !important;
+}
+
+.badge-inactive {
+  background: rgba(113, 113, 122, 0.1) !important;
+  color: #71717A !important;
+  border: 1px solid rgba(113, 113, 122, 0.2) !important;
+}
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+h1 {
+  font-size: 28px !important;
+  font-weight: 700 !important;
+  color: #FFFFFF !important;
+  margin-bottom: 8px !important;
+}
+
+h2 {
+  font-size: 20px !important;
+  font-weight: 600 !important;
+  color: #FFFFFF !important;
+  margin-bottom: 16px !important;
+}
+
+h3 {
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  color: #E4E4E7 !important;
+  margin-bottom: 12px !important;
+}
+
+p {
+  font-size: 14px !important;
+  color: #A1A1AA !important;
+  line-height: 1.5 !important;
+}
+
+/* ============================================
+   UTILITIES
+   ============================================ */
+.text-muted {
+  color: #71717A !important;
+}
+
+.text-white {
+  color: #FFFFFF !important;
+}
+
+.text-primary {
+  color: #3B82F6 !important;
+}
+
+.mb-4 {
+  margin-bottom: 16px !important;
+}
+
+.mb-6 {
+  margin-bottom: 24px !important;
+}
+
+.mb-8 {
+  margin-bottom: 32px !important;
+}
+
+/* ============================================
+   SCROLLBAR
+   ============================================ */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0A0A0B;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1A1A1D;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #252528;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 60px !important;
+  }
+  
+  .content-area {
+    margin-left: 60px !important;
+    width: calc(100% - 60px) !important;
+  }
+  
+  .topbar {
+    left: 60px !important;
+  }
+  
+  .kpi-grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .dashboard-container {
+    padding: 16px !important;
+  }
+}
